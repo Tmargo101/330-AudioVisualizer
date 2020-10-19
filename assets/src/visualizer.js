@@ -11,10 +11,25 @@ const setupCanvas = (canvasElement, data) => {
 };
 
 const draw = (drawParams = {}) => {
-
 };
+
+const drawFrequency = (data) => {
+	ctx.fillStyle = 'white';
+	ctx.fillRect(0,0,canvasWidth, canvasHeight);
+	console.log(data);
+	for (let x = 0; x < data.length; x++) {
+		ctx.fillStyle = 'black';
+		for (let y = 0; y < data[x].length; y++) {
+			ctx.fillStyle = `rgb(${y*15},${y*15},${y*15})`;
+			ctx.fillRect(x, canvasHeight - (y*2), 1, -data[x][y]);
+		}
+	}
+};
+
+
 
 export {
    setupCanvas,
-   draw
+   draw,
+	drawFrequency
 }

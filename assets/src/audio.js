@@ -1,8 +1,10 @@
+import * as visualizer from './visualizer.js';
+
 let audioCtx;
 let element;
 
 let arrayBuffer = null;
-let data = [];
+let freqencyData = [];
 
 // 3 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
@@ -60,7 +62,7 @@ const loadSoundFile = (filePath) => {
 };
 
 const loadArrayBuffer = (testArrayBuffer) => {
-
+   freqencyData = [];
    let audioBuffer = audioCtx.decodeAudioData(testArrayBuffer, function(e) {
 
       var offline = new OfflineAudioContext(2, e.length ,44100);
@@ -68,22 +70,34 @@ const loadArrayBuffer = (testArrayBuffer) => {
       bufferSource.buffer = e;
 
       var analyser = offline.createAnalyser();
+      analyser.fftSize= 32;
       var scp = offline.createScriptProcessor(256, 0, 1);
 
       bufferSource.connect(analyser);
       scp.connect(offline.destination); // this is necessary for the script processor to start
 
-      var freqData = new Uint8Array(analyser.frequencyBinCount);
+
+      //let freqData = new Uint8Array(analyser.frequencyBinCount);
+
+      // 188 / 18
+      let count =  0;
       scp.onaudioprocess = function(){
-        analyser.getByteFrequencyData(freqData);
-        // console.table(freqData);
-        console.log("Working");
-        data.push(freqData);
+         count += 1;
+         if (count == 18) {
+            let freqData = new Uint8Array(analyser.frequencyBinCount);
+            analyser.getByteFrequencyData(freqData);
+            console.log(freqData);
+            // console.log("Working");
+            freqencyData.push(freqData);
+            count = 0;
+         }
       };
 
       bufferSource.start(0);
       offline.oncomplete = function(e){
         console.log('analysed');
+        visualizer.drawFrequency(freqencyData);
+
       };
       offline.startRendering();
    });
@@ -129,6 +143,6 @@ export {
 
    // Elements
    audioCtx,
-   data
+   freqencyData
    //analyserNode
 };

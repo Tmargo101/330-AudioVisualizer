@@ -31,12 +31,12 @@ const init = () => {
    canvas.height = windowParams.canvasHeight;
    setupUI(canvas);
    visualizer.setupCanvas(canvas, audio.analyserNode);
-   loop();
+   // loop();
 };
 
 const loop = () => {
 	requestAnimationFrame(loop);
-	visualizer.draw(drawParams)
+	visualizer.draw(drawParams);
 };
 
 
@@ -59,6 +59,7 @@ const setupUI = (canvasElement) => {
 
    playButton.onclick = e => {
       console.log(`audioCtx.state before = ${audio.audioCtx.state}`);
+		visualizer.drawFrequency(audio.freqencyData);
 
       // Check if context is in a suspended state (autoplay policy)
       if (audio.audioCtx.state == "suspended") {
@@ -94,10 +95,10 @@ const setupUI = (canvasElement) => {
      }
      fileReader.readAsArrayBuffer(event.target.files[0])
 
-
      // load sound file
      var url = URL.createObjectURL(event.target.files[0]);
      audio.loadSoundFile(url);
+
 
      //audio.loadSoundFile(URL.createObjectURL(event.target.files[0]))
   };
