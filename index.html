@@ -3,44 +3,72 @@
 <head>
 	<meta charset="utf-8" />
 	<title>Audio Sandbox</title>
+	<link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
 	<link href="assets/styles/default-styles.css" type="text/css" rel="stylesheet" />
 	<script src="./assets/src/loader.js" type="module"></script>
 </head>
 <body>
-<main>
-	<canvas width="800" height="400"></canvas>
-	<div id="controls">
-		<section>
-			<button id="playButton" data-playing="no"></button>
-			<button id="fsButton">Full Screen</button>
+	<main>
+	<div class="grid-container">
+		<div class="logoDiv">
+			<img id="iconImage" src="assets/img/icon.png"></img>
+		</div>
+		<div class="titleDiv">
+			<h1>Audio Sandbox</h1>
+		</div>
+		<section class="audioVisualizerDiv">
+			<canvas></canvas>
+		</section>
+		<section class="visualizerControlsDiv">
+			<h3>Visualization Controls</h3>
+			<section>
+				Volume: <input type="range" id="volumeSlider" min="0" max="2" value="1" step="0.01">
+				<span id="volumeLabel">???</span>
+			</section>
+			<section>
+				<span><input type="checkbox" id="gradientCB"><label for="gradientCB">Show Gradient</label></span>
+				<span><input type="checkbox" id="barsCB"><label for="barsCB">Show Bars</label></span>
+				<span><input type="checkbox" id="circlesCB"><label for="circlesCB">Show Circles</label></span>
+				<span><input type="checkbox" id="noiseCB"><label for="noiseCB">Show Noise</label></span>
+				<span><input type="checkbox" id="invertCB"><label for="invertCB">Invert Colors</label></span>
+				<span><input type="checkbox" id="embossCB"><label for="embossCB">Emboss</label></span>
+			</section>
+		</section>
+		<section class="playbackControlsDiv">
+			<h3>Playback Controls</h3>
+			<section>
+				<button id="playButton" data-playing="no"></button>
+				<button id="fsButton">Full Screen</button>
+			</section>
+		</section>
+		<section class="uploadDiv">
+			<h3>Choose a Song</h3>
+			<hr>
 
-			<label>Track:
+			<section>
+				<label for="upload">Upload a song:</label>
+				<br>
+				<input type="file" id="upload" title="Upload File"/>
+				<br>
+			</section>
+			<hr>
+			<label for="trackSelect">Or choose one of the preloaded tracks:</label>
+			<br>
 				<select id="trackSelect">
 					<option value="media/New Adventure Theme.mp3" selected>New Adventure Theme</option>
 					<option value="media/Peanuts Theme.mp3">Peanuts Theme</option>
 					<option value="media/The Picard Song.mp3">The Picard Song</option>
 				</select>
-			</label>
-		</section>
 
-		<section>
-			<p>Choose a sound file from your hard drive! --> <input type="file" id="upload" title="Upload File" /></p>
 		</section>
-
-		<!-- <section>
-			Volume: <input type="range" id="volumeSlider" min="0" max="2" value="1" step="0.01">
-			<span id="volumeLabel">???</span>
+		<section class="descriptionDiv">
+			<h3>About this Application</h3>
 		</section>
-		<section>
-			<span><input type="checkbox" id="gradientCB"><label for="gradientCB">Show Gradient</label></span>
-			<span><input type="checkbox" id="barsCB"><label for="barsCB">Show Bars</label></span>
-			<span><input type="checkbox" id="circlesCB"><label for="circlesCB">Show Circles</label></span>
-			<span><input type="checkbox" id="noiseCB"><label for="noiseCB">Show Noise</label></span>
-			<span><input type="checkbox" id="invertCB"><label for="invertCB">Invert Colors</label></span>
-			<span><input type="checkbox" id="embossCB"><label for="embossCB">Emboss</label></span>
-		</section> -->
-
 	</div>
+
+
+
 </main>
 </body>
 </html>

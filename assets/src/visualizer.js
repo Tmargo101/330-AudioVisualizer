@@ -18,6 +18,7 @@ const setupCanvas = (canvasElement,analyserNodeRef) => {
 
 const draw = (drawParams) => {
    // Drawing code goes here
+   ctx.fillRect(0,0,canvasWidth, canvasHeight);
 };
 
 export {

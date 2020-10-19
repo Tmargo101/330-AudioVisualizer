@@ -1,31 +1,89 @@
-body {
-   background: #eeeeee;
+/* Use Apple's San Fransisco Font */
+@font-face {
+   src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff");
+   font-family: "San Fransisco";
+   /* font-weight: 400; */
 }
 
+body {
+   background: #eeeeee;
+   font-family: "San Fransisco";
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 10% 1fr 1fr 1fr 10%;
+  grid-template-rows: 5% 1fr 1fr 1fr 1fr;
+  gap: 1% 1%;
+  grid-template-areas:
+    ". logoDiv titleDiv . ."
+    ". audioVisualizerDiv audioVisualizerDiv audioVisualizerDiv ."
+    ". visualizerControlsDiv visualizerControlsDiv playbackControlsDiv ."
+    ". uploadDiv descriptionDiv descriptionDiv ."
+    ". . . . .";
+}
+
+section {
+   padding: 10px;
+   border-radius: 1em;
+}
+
+.audioVisualizerDiv {
+   grid-area: audioVisualizerDiv;
+   background-color: blue;
+}
+
+.titleDiv {
+   grid-area: titleDiv;
+   text-align: center;
+}
+
+.logoDiv {
+   grid-area: logoDiv;
+   margin-left: auto;
+   margin-right: auto;
+}
+.logoDiv img {
+   height: 100px;
+}
+
+.descriptionDiv {
+   grid-area: descriptionDiv;
+   background-color: gray;
+ }
+
+.uploadDiv {
+   grid-area: uploadDiv;
+   background-color: gold;
+}
+
+.visualizerControlsDiv {
+   grid-area: visualizerControlsDiv;
+   background-color: green;
+}
+
+.playbackControlsDiv {
+   grid-area: playbackControlsDiv;
+   background-color: purple;
+}
+
+
+
 canvas {
-   margin-left: 1rem;
-	margin-top: 1rem;
-	margin-bottom: 1rem;
+   margin-left: auto;
+   margin-right: auto;
+   display: block;
 	box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
 	background: #fafafa;
 }
 
-section{
-  margin-bottom: 1rem;
+h3 {
+   text-align: center;
 }
 
-#controls{
-  margin-left: 1rem;
-}
 
-#fsButton{
-  font-size: 1.2rem;
-  width: 8rem;
-}
-
-#playButton{
-  font-size: 1.2rem;
-  width: 6rem;
+button {
+   font-size: 1.5rem;
 }
 
 button[data-playing="yes"]:after{
@@ -38,4 +96,7 @@ button[data-playing="no"]:after{
 
 input[type=file] {
    border: 2px dashed red;
+   padding: 20px;
+   margin-top: 10px;
+   margin-bottom: 10px;
 }

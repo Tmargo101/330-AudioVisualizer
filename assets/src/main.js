@@ -2,22 +2,40 @@
 import * as audio from './audio.js';
 import * as visualizer from './visualizer.js';
 import * as utils from './utils.js';
+
 // Declare constants
 const DEFAULTS = Object.freeze({
 	sound1  :  "./assets/audio/New Adventure Theme.mp3"
 });
 
+const windowParams = {
+   canvasWidth : 800,
+   canvasHeight : 400
+}
+
+const drawParams = {
+
+}
+
+const uploadFiles = "";
+
+
+
+
 const init = () => {
    audio.setupWebAudio(DEFAULTS.sound1);
-   let canvasElement = document.querySelector("canvas");
-   setupUI(canvasElement);
+   let canvas = document.querySelector("canvas");
+   // canvas.width = windowParams.canvasWidth;
+   // canvas.height = windowParams.canvasHeight;
+   canvas.width = windowParams.canvasWidth;
+   canvas.height = windowParams.canvasHeight;
+   setupUI(canvas);
+};
 
-}
-
-function loop(){
+const loop = () => {
 	requestAnimationFrame(loop);
 	visualizer.draw(drawParams)
-}
+};
 
 
 const setupUI = (canvasElement) => {
@@ -46,10 +64,13 @@ const setupUI = (canvasElement) => {
   };
 
   document.querySelector("#upload").onchange = (e) => {
-     const files = event.target.files;
-     document.querySelector("audio").src = URL.createObjectURL(files[0]);
+     if (playButton.dataset.playing = "yes") {
+        playButton.dispatchEvent(new MouseEvent("click"));
+     }
+     // uploadFiles = URL.createObjectURL(event.target.files[0]);
+     audio.setupWebAudio(URL.createObjectURL(event.target.files[0]));
   };
-}
+};
 
 
 // Export functions to be used in other modules
