@@ -1,7 +1,7 @@
 let audioCtx;
 let element;
 
-let source = null;
+let arrayBuffer = null;
 
 // 3 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
@@ -21,40 +21,47 @@ const setupWebAudio = (filePath) => {
    // 3 - have it point at a sound file
    loadSoundFile(filePath);
 
-   source = audioCtx.createBufferSource();
 
-   // Create the XHR which will grab the audio contents
-   var request = new XMLHttpRequest();
-   // Set the audio file src here
-   request.open('GET', filePath, true);
-   // Setting the responseType to arraybuffer sets up the audio decoding
-   request.responseType = 'arraybuffer';
-   request.onload = function() {
-     // Decode the audio once the require is complete
-     audioCtx.decodeAudioData(request.response, function(newBuffer) {
-       source.buffer = newBuffer;
-       // Connect the audio to source (multiple audio buffers can be connected!)
-       //currentBuffer.connect(audioCtx.destination);
-       // Simple setting for the buffer
-       //currentBuffer.loop = true;
-       // Play the sound!
-       //currentBuffer.start(0);
-     }, function(e) {
-       console.log('Audio error! ', e);
-     });
-   }
 
-   // Send the request which kicks off
-   request.send();
-
-console.table(currentBuffer);
-
+//    source = audioCtx.createBufferSource();
+//
+//    // Create the XHR which will grab the audio contents
+//    var request = new XMLHttpRequest();
+//    // Set the audio file src here
+//    request.open('GET', filePath, true);
+//    // Setting the responseType to arraybuffer sets up the audio decoding
+//    request.responseType = 'arraybuffer';
+//    request.onload = function() {
+//      // Decode the audio once the require is complete
+//      audioCtx.decodeAudioData(request.response, function(newBuffer) {
+//        source.buffer = newBuffer;
+//        // Connect the audio to source (multiple audio buffers can be connected!)
+//        //currentBuffer.connect(audioCtx.destination);
+//        // Simple setting for the buffer
+//        //currentBuffer.loop = true;
+//        // Play the sound!
+//        //currentBuffer.start(0);
+//      }, function(e) {
+//        console.log('Audio error! ', e);
+//      });
+//    }
+//
+//    // Send the request which kicks off
+//    request.send();
+//
+// console.table(currentBuffer);
+//
 
 
 };
 
 const loadSoundFile = (filePath) => {
    element.src = filePath;
+};
+
+const loadArrayBuffer = (testFile) => {
+   console.log(testFile);
+   audioCtx.decodeAudioData(testFile);
 };
 
 const playCurrentSound = () => {
@@ -67,7 +74,7 @@ const pauseCurrentSound = () => {
 
 const setVolume = (value) => {
    value = Number(value); // make sure that it's a Number rather than a String
-   gainNode.gain.value = value;
+   //gainNode.gain.value = value;
 };
 
 export {
@@ -77,8 +84,9 @@ export {
    pauseCurrentSound,
    setVolume,
    loadSoundFile,
+   loadArrayBuffer,
 
    // Elements
    audioCtx,
-   analyserNode
+   //analyserNode
 };
