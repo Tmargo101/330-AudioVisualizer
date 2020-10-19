@@ -30,6 +30,8 @@ const init = () => {
    canvas.width = windowParams.canvasWidth;
    canvas.height = windowParams.canvasHeight;
    setupUI(canvas);
+   visualizer.setupCanvas(canvas, audio.analyserNode);
+   loop();
 };
 
 const loop = () => {
@@ -40,6 +42,21 @@ const loop = () => {
 
 const setupUI = (canvasElement) => {
 
+   let volumeSlider = document.querySelector("#volumeSlider");
+
+   volumeSlider.oninput = e => {
+      //set the gain
+      audio.setVolume(e.target.value);
+
+      // update value of label to match value of slider
+      volumeLabel.innerHTML = Math.round((e.target.value / 2 * 100));
+
+   };
+
+   volumeSlider.dispatchEvent(new Event('input'));
+
+
+
    playButton.onclick = e => {
       console.log(`audioCtx.state before = ${audio.audioCtx.state}`);
 
@@ -48,7 +65,6 @@ const setupUI = (canvasElement) => {
          audio.audioCtx.resume();
       }
 
-      console.log(`audioCtx.state before = ${audio.audioCtx.state}`);
 
       if (e.target.dataset.playing == "no") {
 
@@ -67,8 +83,7 @@ const setupUI = (canvasElement) => {
      if (playButton.dataset.playing = "yes") {
         playButton.dispatchEvent(new MouseEvent("click"));
      }
-     // uploadFiles = URL.createObjectURL(event.target.files[0]);
-     audio.setupWebAudio(URL.createObjectURL(event.target.files[0]));
+     audio.loadSoundFile(URL.createObjectURL(event.target.files[0]))
   };
 };
 

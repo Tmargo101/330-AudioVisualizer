@@ -56,6 +56,7 @@ const setupWebAudio = (filePath) => {
    sourceNode.connect(analyserNode);
    analyserNode.connect(gainNode);
    gainNode.connect(audioCtx.destination);
+
 };
 
 const loadSoundFile = (filePath) => {
