@@ -2,6 +2,7 @@ let audioCtx;
 let element;
 
 let arrayBuffer = null;
+let data = [];
 
 // 3 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
@@ -20,7 +21,6 @@ const setupWebAudio = (filePath) => {
 
    // 3 - have it point at a sound file
    loadSoundFile(filePath);
-
 
 
 //    source = audioCtx.createBufferSource();
@@ -60,8 +60,21 @@ const loadSoundFile = (filePath) => {
 };
 
 const loadArrayBuffer = (testFile) => {
-   console.log(testFile);
-   audioCtx.decodeAudioData(testFile);
+
+   let fileReader  = new FileReader;
+   fileReader.onload = function(){
+     let arrayBuffer = this.result;
+     audioCtx.decodeAudioData(this.result)
+     .then(function(buffer) {
+        let rawData = buffer.getChannelData(0);
+        const samples = 70; // Number of samples we want to have in our final data set
+        const blockSize = Math.floor(rawData.length / samples); // Number of samples in each subdivision
+        for (let i = 0; i < samples; i++) {
+          data.push(rawData[i * blockSize]);
+        }
+     });
+   }
+   fileReader.readAsArrayBuffer(testFile);
 };
 
 const playCurrentSound = () => {
@@ -88,5 +101,6 @@ export {
 
    // Elements
    audioCtx,
+   data
    //analyserNode
 };

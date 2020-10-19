@@ -30,8 +30,8 @@ const init = () => {
    canvas.width = windowParams.canvasWidth;
    canvas.height = windowParams.canvasHeight;
    setupUI(canvas);
-   visualizer.setupCanvas(canvas, audio.analyserNode);
-   loop();
+   visualizer.setupCanvas(canvas, audio.data);
+   // loop();
 };
 
 const loop = () => {
@@ -83,19 +83,15 @@ const setupUI = (canvasElement) => {
      if (playButton.dataset.playing = "yes") {
         playButton.dispatchEvent(new MouseEvent("click"));
      }
+     console.log(typeof event.target.files[0]);
+     audio.loadArrayBuffer(event.target.files[0]);
 
      // read array buffer
-     let fileReader  = new FileReader;
-     fileReader.onload = function(){
-        let arrayBuffer = this.result;
-        audio.loadArrayBuffer(arrayBuffer);
-     }
-     fileReader.readAsArrayBuffer(event.target.files[0])
 
-
-     // load sound file
      var url = URL.createObjectURL(event.target.files[0]);
      audio.loadSoundFile(url);
+
+     // load sound file
 
      //audio.loadSoundFile(URL.createObjectURL(event.target.files[0]))
   };
