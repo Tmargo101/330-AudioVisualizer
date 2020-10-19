@@ -1,5 +1,6 @@
 // 1 - our WebAudio context, **we will export and make this public at the bottom of the file**
 let audioCtx;
+let currentBuffer = null;
 
 // **These are "private" properties - these will NOT be visible outside of this module (i.e. file)**
 // 2 - WebAudio nodes that are part of our WebAudio audio routing graph
@@ -58,6 +59,12 @@ const setupWebAudio = (filePath) => {
    gainNode.connect(audioCtx.destination);
 
 };
+
+const showBuffer = (element) => {
+   element.arrayBuffer();
+   audioCtx.decodeAudioData(arrayBuffer);
+   console.table(arrayBuffer);
+}
 
 const loadSoundFile = (filePath) => {
    element.src = filePath;
