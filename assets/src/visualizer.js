@@ -8,11 +8,10 @@ const setupCanvas = (canvasElement, data) => {
 	canvasWidth = canvasElement.width;
 	canvasHeight = canvasElement.height;
 	// create a gradient that runs top to bottom
-   thisBuffer = data;
 };
 
 const draw = (drawParams = {}) => {
-   console.table(audio.data);
+
 };
 
 export {

@@ -59,22 +59,50 @@ const loadSoundFile = (filePath) => {
    element.src = filePath;
 };
 
-const loadArrayBuffer = (testFile) => {
+const loadArrayBuffer = (testArrayBuffer) => {
 
-   let fileReader  = new FileReader;
-   fileReader.onload = function(){
-     let arrayBuffer = this.result;
-     audioCtx.decodeAudioData(this.result)
-     .then(function(buffer) {
-        let rawData = buffer.getChannelData(0);
-        const samples = 70; // Number of samples we want to have in our final data set
-        const blockSize = Math.floor(rawData.length / samples); // Number of samples in each subdivision
-        for (let i = 0; i < samples; i++) {
-          data.push(rawData[i * blockSize]);
-        }
-     });
-   }
-   fileReader.readAsArrayBuffer(testFile);
+   let audioBuffer = audioCtx.decodeAudioData(testArrayBuffer, function(e) {
+
+      var offline = new OfflineAudioContext(2, e.length ,44100);
+      var bufferSource = offline.createBufferSource();
+      bufferSource.buffer = e;
+
+      var analyser = offline.createAnalyser();
+      var scp = offline.createScriptProcessor(256, 0, 1);
+
+      bufferSource.connect(analyser);
+      scp.connect(offline.destination); // this is necessary for the script processor to start
+
+      var freqData = new Uint8Array(analyser.frequencyBinCount);
+      scp.onaudioprocess = function(){
+        analyser.getByteFrequencyData(freqData);
+        // console.table(freqData);
+        console.log("Working");
+        data.push(freqData);
+      };
+
+      bufferSource.start(0);
+      offline.oncomplete = function(e){
+        console.log('analysed');
+      };
+      offline.startRendering();
+   });
+
+
+   // let fileReader  = new FileReader;
+   // fileReader.onload = function(){
+   //   let arrayBuffer = this.result;
+   //   audioCtx.decodeAudioData(this.result)
+   //   .then(function(buffer) {
+   //      let rawData = buffer.getChannelData(0);
+   //      const samples = 70; // Number of samples we want to have in our final data set
+   //      const blockSize = Math.floor(rawData.length / samples); // Number of samples in each subdivision
+   //      for (let i = 0; i < samples; i++) {
+   //        data.push(rawData[i * blockSize]);
+   //      }
+   //   });
+   // }
+   // fileReader.readAsArrayBuffer(testFile);
 };
 
 const playCurrentSound = () => {

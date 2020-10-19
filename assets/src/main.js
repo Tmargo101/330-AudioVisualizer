@@ -90,31 +90,7 @@ const setupUI = (canvasElement) => {
         let arrayBuffer = this.result;
         console.log(arrayBuffer);
         console.log(arrayBuffer.byteLength);
-
-        let audioBuffer = new AudioBuffer(arrayBuffer);
-
-               var offline = new OfflineAudioContext(2, audioBuffer.length ,44100);
-               var bufferSource = offline.createBufferSource();
-               bufferSource.buffer = audioBuffer;
-
-               var analyser = offline.createAnalyser();
-               var scp = offline.createScriptProcessor(256, 0, 1);
-
-               bufferSource.connect(analyser);
-               scp.connect(offline.destination); // this is necessary for the script processor to start
-
-               var freqData = new Uint8Array(analyser.frequencyBinCount);
-               scp.onaudioprocess = function(){
-                 analyser.getByteFrequencyData(freqData);
-                 console.log(freqData);
-               };
-
-               bufferSource.start(0);
-               offline.oncomplete = function(e){
-                 console.log('analysed');
-               };
-               offline.startRendering();
-
+		  audio.loadArrayBuffer(arrayBuffer);
      }
      fileReader.readAsArrayBuffer(event.target.files[0])
 
