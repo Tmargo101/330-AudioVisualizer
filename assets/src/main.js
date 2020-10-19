@@ -30,8 +30,8 @@ const init = () => {
    canvas.width = windowParams.canvasWidth;
    canvas.height = windowParams.canvasHeight;
    setupUI(canvas);
-   visualizer.setupCanvas(canvas, audio.data);
-   // loop();
+   visualizer.setupCanvas(canvas, audio.analyserNode);
+   loop();
 };
 
 const loop = () => {
@@ -83,15 +83,45 @@ const setupUI = (canvasElement) => {
      if (playButton.dataset.playing = "yes") {
         playButton.dispatchEvent(new MouseEvent("click"));
      }
-     console.log(typeof event.target.files[0]);
-     audio.loadArrayBuffer(event.target.files[0]);
 
      // read array buffer
+     let fileReader  = new FileReader;
+     fileReader.onload = function(){
+        let arrayBuffer = this.result;
+        console.log(arrayBuffer);
+        console.log(arrayBuffer.byteLength);
 
-     var url = URL.createObjectURL(event.target.files[0]);
-     audio.loadSoundFile(url);
+        let audioBuffer = new AudioBuffer(arrayBuffer);
+
+               var offline = new OfflineAudioContext(2, audioBuffer.length ,44100);
+               var bufferSource = offline.createBufferSource();
+               bufferSource.buffer = audioBuffer;
+
+               var analyser = offline.createAnalyser();
+               var scp = offline.createScriptProcessor(256, 0, 1);
+
+               bufferSource.connect(analyser);
+               scp.connect(offline.destination); // this is necessary for the script processor to start
+
+               var freqData = new Uint8Array(analyser.frequencyBinCount);
+               scp.onaudioprocess = function(){
+                 analyser.getByteFrequencyData(freqData);
+                 console.log(freqData);
+               };
+
+               bufferSource.start(0);
+               offline.oncomplete = function(e){
+                 console.log('analysed');
+               };
+               offline.startRendering();
+
+     }
+     fileReader.readAsArrayBuffer(event.target.files[0])
+
 
      // load sound file
+     var url = URL.createObjectURL(event.target.files[0]);
+     audio.loadSoundFile(url);
 
      //audio.loadSoundFile(URL.createObjectURL(event.target.files[0]))
   };
