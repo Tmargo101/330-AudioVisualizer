@@ -26,6 +26,7 @@ const uploadFiles = "";
 
 const init = () => {
    audio.setupWebAudio(DEFAULTS.sound1);
+
    let canvas = document.querySelector("canvas");
    // canvas.width = windowParams.canvasWidth;
    // canvas.height = windowParams.canvasHeight;

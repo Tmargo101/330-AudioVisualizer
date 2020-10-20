@@ -24,6 +24,13 @@ const setupWebAudio = (filePath) => {
    // 3 - have it point at a sound file
    loadSoundFile(filePath);
 
+   // let fileReader  = new FileReader;
+   // fileReader.onload = function(event){
+   //    loadArrayBuffer(event.result);
+   // }
+   // fileReader.readAsArrayBuffer(filePath.files);
+
+
 };
 
 const loadSoundFile = (filePath) => {
@@ -52,7 +59,7 @@ const loadArrayBuffer = (testArrayBuffer) => {
          if (count == 10) {
             let freqData = new Uint8Array(analyser.frequencyBinCount);
             analyser.getByteFrequencyData(freqData);
-            // console.log(freqData);
+            console.log(freqData);
             // console.log("Working");
             freqencyData.push(freqData);
             count = 0;
@@ -67,21 +74,6 @@ const loadArrayBuffer = (testArrayBuffer) => {
       offline.startRendering();
    });
 
-
-   // let fileReader  = new FileReader;
-   // fileReader.onload = function(){
-   //   let arrayBuffer = this.result;
-   //   audioCtx.decodeAudioData(this.result)
-   //   .then(function(buffer) {
-   //      let rawData = buffer.getChannelData(0);
-   //      const samples = 70; // Number of samples we want to have in our final data set
-   //      const blockSize = Math.floor(rawData.length / samples); // Number of samples in each subdivision
-   //      for (let i = 0; i < samples; i++) {
-   //        data.push(rawData[i * blockSize]);
-   //      }
-   //   });
-   // }
-   // fileReader.readAsArrayBuffer(testFile);
 };
 
 const playCurrentSound = () => {

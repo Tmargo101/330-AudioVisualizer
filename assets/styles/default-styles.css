@@ -13,19 +13,28 @@ body {
 .grid-container {
   display: grid;
   grid-template-columns: 10% 1fr 1fr 1fr 10%;
-  grid-template-rows: 5% 1fr 1fr 1fr 1fr;
+  grid-template-rows: 5% 1fr 1fr 1fr 5%;
   gap: 1% 1%;
   grid-template-areas:
-    ". logoDiv titleDiv . ."
+    ". . headerDiv . ."
     ". audioVisualizerDiv audioVisualizerDiv audioVisualizerDiv ."
-    ". visualizerControlsDiv visualizerControlsDiv playbackControlsDiv ."
-    ". uploadDiv descriptionDiv descriptionDiv ."
+    ". uploadDiv visualizerControlsDiv playbackControlsDiv ."
+    ". descriptionDiv descriptionDiv descriptionDiv ."
     ". . . . .";
 }
 
 section {
    padding: 10px;
    border-radius: 1em;
+}
+
+.headerDiv {
+   grid-area: headerDiv;
+   display: grid;
+   grid-template-columns: 30% 70%;
+   grid-template-rows: 1fr;
+   grid-template-areas:
+   "logoDiv titleDiv";
 }
 
 .audioVisualizerDiv {
@@ -35,7 +44,7 @@ section {
 
 .titleDiv {
    grid-area: titleDiv;
-   text-align: center;
+   text-align: left;
 }
 
 .logoDiv {
@@ -43,8 +52,8 @@ section {
    margin-left: auto;
    margin-right: auto;
 }
-.logoDiv img {
-   height: 100px;
+.headerDiv img {
+   height: 75px;
 }
 
 .descriptionDiv {
