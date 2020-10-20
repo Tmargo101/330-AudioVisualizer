@@ -9,12 +9,14 @@ const DEFAULTS = Object.freeze({
 });
 
 const windowParams = {
-   canvasWidth : 800,
-   canvasHeight : 400
+   canvasWidth : 1000,
+   canvasHeight : 400,
+	playing : "no"
 }
 
 const drawParams = {
-
+	waveform : true,
+	playHeadPosition : 0
 }
 
 const uploadFiles = "";
@@ -31,16 +33,21 @@ const init = () => {
    canvas.height = windowParams.canvasHeight;
    setupUI(canvas);
    visualizer.setupCanvas(canvas, audio.analyserNode);
-   // loop();
+   loop();
 };
 
 const loop = () => {
 	requestAnimationFrame(loop);
-	visualizer.draw(drawParams);
+
+	if (windowParams.playing == "yes") {
+		visualizer.drawPlayHead(drawParams.playHeadPosition);
+		drawParams.playHeadPosition += 0.3;
+	}
 };
 
 
 const setupUI = (canvasElement) => {
+
 
    let volumeSlider = document.querySelector("#volumeSlider");
 
@@ -59,7 +66,6 @@ const setupUI = (canvasElement) => {
 
    playButton.onclick = e => {
       console.log(`audioCtx.state before = ${audio.audioCtx.state}`);
-		visualizer.drawFrequency(audio.freqencyData);
 
       // Check if context is in a suspended state (autoplay policy)
       if (audio.audioCtx.state == "suspended") {
@@ -71,10 +77,12 @@ const setupUI = (canvasElement) => {
 
          // If track is paused, play it
          audio.playCurrentSound();
+			windowParams.playing = "yes";
          e.target.dataset.playing = "yes"; // Our CSS will set the text to "Pause"
 
       } else {
          audio.pauseCurrentSound();
+			windowParams.playing = "no";
          e.target.dataset.playing = "no"; // Our CSS will set the text to "Play"
 
       }
@@ -85,19 +93,22 @@ const setupUI = (canvasElement) => {
         playButton.dispatchEvent(new MouseEvent("click"));
      }
 
-     // read array buffer
-     let fileReader  = new FileReader;
-     fileReader.onload = function(){
-        let arrayBuffer = this.result;
-        console.log(arrayBuffer);
-        console.log(arrayBuffer.byteLength);
-		  audio.loadArrayBuffer(arrayBuffer);
-     }
-     fileReader.readAsArrayBuffer(event.target.files[0])
+	  if (drawParams.waveform) {
+		  document.querySelector("#playButton").disabled = true;
+		  document.querySelector("#playButton").dataset.playing = "processing";
+
+		  // read array buffer
+		  let fileReader  = new FileReader;
+		  fileReader.onload = function(){
+			  audio.loadArrayBuffer(this.result);
+		  }
+		  fileReader.readAsArrayBuffer(event.target.files[0])
+	  }
 
      // load sound file
      var url = URL.createObjectURL(event.target.files[0]);
      audio.loadSoundFile(url);
+	  drawParams.playHeadPosition = 0;
 
 
      //audio.loadSoundFile(URL.createObjectURL(event.target.files[0]))

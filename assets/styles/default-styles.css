@@ -94,6 +94,10 @@ button[data-playing="no"]:after{
   content: "Play";
 }
 
+button[data-playing="processing"]:after{
+  content: "Processing Song...";
+}
+
 input[type=file] {
    border: 2px dashed red;
    padding: 20px;

@@ -24,37 +24,6 @@ const setupWebAudio = (filePath) => {
    // 3 - have it point at a sound file
    loadSoundFile(filePath);
 
-
-//    source = audioCtx.createBufferSource();
-//
-//    // Create the XHR which will grab the audio contents
-//    var request = new XMLHttpRequest();
-//    // Set the audio file src here
-//    request.open('GET', filePath, true);
-//    // Setting the responseType to arraybuffer sets up the audio decoding
-//    request.responseType = 'arraybuffer';
-//    request.onload = function() {
-//      // Decode the audio once the require is complete
-//      audioCtx.decodeAudioData(request.response, function(newBuffer) {
-//        source.buffer = newBuffer;
-//        // Connect the audio to source (multiple audio buffers can be connected!)
-//        //currentBuffer.connect(audioCtx.destination);
-//        // Simple setting for the buffer
-//        //currentBuffer.loop = true;
-//        // Play the sound!
-//        //currentBuffer.start(0);
-//      }, function(e) {
-//        console.log('Audio error! ', e);
-//      });
-//    }
-//
-//    // Send the request which kicks off
-//    request.send();
-//
-// console.table(currentBuffer);
-//
-
-
 };
 
 const loadSoundFile = (filePath) => {
@@ -62,6 +31,8 @@ const loadSoundFile = (filePath) => {
 };
 
 const loadArrayBuffer = (testArrayBuffer) => {
+
+   // Clear the frequencyData Array
    freqencyData = [];
    let audioBuffer = audioCtx.decodeAudioData(testArrayBuffer, function(e) {
 
@@ -76,28 +47,22 @@ const loadArrayBuffer = (testArrayBuffer) => {
       bufferSource.connect(analyser);
       scp.connect(offline.destination); // this is necessary for the script processor to start
 
-
-      //let freqData = new Uint8Array(analyser.frequencyBinCount);
-
-      // 188 / 18
       let count =  0;
       scp.onaudioprocess = function(){
-         count += 1;
-         if (count == 18) {
+         if (count == 10) {
             let freqData = new Uint8Array(analyser.frequencyBinCount);
             analyser.getByteFrequencyData(freqData);
-            console.log(freqData);
+            // console.log(freqData);
             // console.log("Working");
             freqencyData.push(freqData);
             count = 0;
          }
+         count += 1;
       };
-
       bufferSource.start(0);
       offline.oncomplete = function(e){
         console.log('analysed');
         visualizer.drawFrequency(freqencyData);
-
       };
       offline.startRendering();
    });
