@@ -28,8 +28,6 @@ const init = () => {
    audio.setupWebAudio(DEFAULTS.sound1);
 
    let canvas = document.querySelector("canvas");
-   // canvas.width = windowParams.canvasWidth;
-   // canvas.height = windowParams.canvasHeight;
    canvas.width = windowParams.canvasWidth;
    canvas.height = windowParams.canvasHeight;
    setupUI(canvas);
@@ -42,7 +40,8 @@ const loop = () => {
 
 	if (windowParams.playing == "yes") {
 		visualizer.drawPlayHead(drawParams.playHeadPosition);
-		drawParams.playHeadPosition += 0.3;
+		drawParams.playHeadPosition += visualizer.barWidth / 3.25;
+		console.log("playHead at x=" + drawParams.playHeadPosition);
 	}
 };
 

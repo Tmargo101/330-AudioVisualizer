@@ -60,8 +60,10 @@ const loadArrayBuffer = (testArrayBuffer) => {
             let freqData = new Uint8Array(analyser.frequencyBinCount);
             analyser.getByteFrequencyData(freqData);
             console.log(freqData);
-            // console.log("Working");
-            freqencyData.push(freqData);
+            let sum = freqData.reduce(function(a, b) {return a + b;}, 0);
+            if (sum != 0) {
+               freqencyData.push(freqData);
+            }
             count = 0;
          }
          count += 1;
