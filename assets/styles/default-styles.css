@@ -55,7 +55,7 @@ section {
    gap: 15% 1%;
    grid-template-areas:
      "waveformDiv waveformDiv waveformDiv"
-     "playbackControlsDiv . volumeControlDiv";
+     "restartButtonDiv playbackControlsDiv volumeControlDiv";
 }
 
 .waveformDiv {
@@ -68,6 +68,10 @@ section {
 
 .volumeControlDiv {
    grid-area: volumeControlDiv;
+}
+
+.restartButtonDiv {
+   grid-area: restartButtonDiv;
 }
 
 .titleDiv {

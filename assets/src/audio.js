@@ -6,7 +6,6 @@ let audioElement, sourceNode, analyserNode, gainNode;
 let arrayBuffer = null;
 let freqencyData = [];
 
-// 3 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
    gain : 0.5,
    numSamples : 256
@@ -14,26 +13,21 @@ const DEFAULTS = Object.freeze({
 
 const setupWebAudio = (filePath) => {
 
-   // 1 - The || is because WebAudio has not been standardized across browsers yet
    const AudioContext = window.AudioContext || window.webkitAudioContext;
    audioCtx = new AudioContext();
 
-   // 2 - this creates an <audio> audioElement
    audioElement = new Audio();
 
-   // 3 - have it point at a sound file
    xhrLoadSoundFile(filePath);
 
    sourceNode = audioCtx.createMediaElementSource(audioElement);
-
    analyserNode = audioCtx.createAnalyser();
+
    analyserNode.fftSize = DEFAULTS.numSamples;
 
-   // 7 - create a gain (volume) node
    gainNode = audioCtx.createGain();
    gainNode.gain.value = DEFAULTS.gain;
 
-   // 8 - connect the nodes - we now have an audio graph
    sourceNode.connect(analyserNode);
    analyserNode.connect(gainNode);
    gainNode.connect(audioCtx.destination);
@@ -49,7 +43,7 @@ const xhrLoadSoundFile = (filePath) => {
 
    audioElement.src = filePath;
 
-
+   // Load the file using an XHR request in arrayBuffer format so it comes in as a blob
    let xhr = new XMLHttpRequest();
    xhr.open('GET', filePath, true);
    xhr.responseType = 'arraybuffer';
@@ -62,10 +56,12 @@ const xhrLoadSoundFile = (filePath) => {
       }
    }
 
+   // Trigger the xhr.onload event
    xhr.send();
 };
 
 const loadArrayBuffer = (testArrayBuffer) => {
+   // Disable the play button while processing is happening
    document.querySelector("#playButton").disabled = true;
    document.querySelector("#playButton").dataset.playing = "processing";
 
@@ -73,6 +69,7 @@ const loadArrayBuffer = (testArrayBuffer) => {
    freqencyData = [];
    let audioBuffer = audioCtx.decodeAudioData(testArrayBuffer, function(e) {
 
+      // Start of code
       var offline = new OfflineAudioContext(2, e.length ,44100);
       var bufferSource = offline.createBufferSource();
       bufferSource.buffer = e;
@@ -104,6 +101,8 @@ const loadArrayBuffer = (testArrayBuffer) => {
         console.log('analysed');
         visualizer.drawFrequency(freqencyData);
       };
+
+      // Trigger the render event
       offline.startRendering();
    });
 

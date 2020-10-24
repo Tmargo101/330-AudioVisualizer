@@ -250,6 +250,13 @@ const drawPlayHead = (inXPosition) => {
 	waveformCtx.restore();
 };
 
+const clearMainCanvas = () => {
+	mainCtx.save()
+	mainCtx.fillStyle = "black";
+	mainCtx.fillRect(0,0,mainCanvasWidth, mainCanvasHeight);
+	mainCtx.restore()
+}
+
 
 export {
    setupWaveformCanvas,
@@ -257,5 +264,6 @@ export {
    drawMain,
 	drawFrequency,
 	drawPlayHead,
-	barWidth
+	barWidth,
+	clearMainCanvas
 }
