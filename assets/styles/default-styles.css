@@ -13,13 +13,14 @@ body {
 .grid-container {
   display: grid;
   grid-template-columns: 10% 1fr 1fr 1fr 10%;
-  grid-template-rows: 5% 1fr 1fr 1fr 1fr;
+  grid-template-rows: 5% 1fr min-content 1fr 1fr 5%;
   gap: 1% 1%;
   grid-template-areas:
-    ". logoDiv titleDiv . ."
+    ". . headerDiv . ."
     ". audioVisualizerDiv audioVisualizerDiv audioVisualizerDiv ."
-    ". visualizerControlsDiv visualizerControlsDiv playbackControlsDiv ."
-    ". uploadDiv descriptionDiv descriptionDiv ."
+    ". waveformVisualizerDiv waveformVisualizerDiv waveformVisualizerDiv ."
+    ". chooseSongDiv visualizerControlsDiv visualizerControlsDiv ."
+    ". descriptionDiv descriptionDiv descriptionDiv ."
     ". . . . .";
 }
 
@@ -28,14 +29,50 @@ section {
    border-radius: 1em;
 }
 
+.headerDiv {
+   grid-area: headerDiv;
+   display: grid;
+   grid-template-columns: 30% 70%;
+   grid-template-rows: 1fr;
+   grid-template-areas:
+   "logoDiv titleDiv";
+}
+
 .audioVisualizerDiv {
    grid-area: audioVisualizerDiv;
    background-color: blue;
 }
 
+.waveformVisualizerDiv {
+   grid-area: waveformVisualizerDiv;
+   background-color: rgb(25,25,25);
+   text-align: center;
+   color: white;
+
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr;
+   grid-template-rows: 1fr 1fr;
+   gap: 15% 1%;
+   grid-template-areas:
+     "waveformDiv waveformDiv waveformDiv"
+     "playbackControlsDiv . volumeControlDiv";
+}
+
+.waveformDiv {
+   grid-area: waveformDiv;
+}
+
+.playbackControlsDiv {
+   grid-area: playbackControlsDiv;
+}
+
+.volumeControlDiv {
+   grid-area: volumeControlDiv;
+}
+
 .titleDiv {
    grid-area: titleDiv;
-   text-align: center;
+   text-align: left;
 }
 
 .logoDiv {
@@ -43,8 +80,8 @@ section {
    margin-left: auto;
    margin-right: auto;
 }
-.logoDiv img {
-   height: 100px;
+.headerDiv img {
+   height: 75px;
 }
 
 .descriptionDiv {
@@ -52,8 +89,8 @@ section {
    background-color: gray;
  }
 
-.uploadDiv {
-   grid-area: uploadDiv;
+.chooseSongDiv {
+   grid-area: chooseSongDiv;
    background-color: gold;
 }
 
@@ -62,10 +99,6 @@ section {
    background-color: green;
 }
 
-.playbackControlsDiv {
-   grid-area: playbackControlsDiv;
-   background-color: purple;
-}
 
 
 
@@ -92,6 +125,10 @@ button[data-playing="yes"]:after{
 
 button[data-playing="no"]:after{
   content: "Play";
+}
+
+button[data-playing="processing"]:after{
+  content: "Processing Song...";
 }
 
 input[type=file] {
