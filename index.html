@@ -19,8 +19,24 @@
 				<h1>Audio Sandbox</h1>
 			</div>
 		</div>
+
 		<section class="audioVisualizerDiv">
-			<canvas></canvas>
+			<canvas id="mainCanvas"></canvas>
+		</section>
+		<section class="waveformVisualizerDiv">
+			<article class="waveformDiv">
+				<canvas id="waveformCanvas"></canvas>
+			</article>
+			<div class="playbackControlsDiv">
+				<button id="playButton" data-playing="no"></button>
+			</div>
+
+			<div class="volumeControlDiv">
+				Volume: <input type="range" id="volumeSlider" min="0" max="2" value="1" step="0.01">
+				<span id="volumeLabel">???</span>
+			</div>
+
+
 		</section>
 		<section class="visualizerControlsDiv">
 			<h3>Visualization Controls</h3>
@@ -33,23 +49,12 @@
 				<span><input type="checkbox" id="invertCB"><label for="invertCB">Invert Colors</label></span>
 				<span><input type="checkbox" id="embossCB"><label for="embossCB">Emboss</label></span>
 			</section>
-		</section>
-		<section class="playbackControlsDiv">
-			<h3>Playback Controls</h3>
-			<section>
-				<button id="playButton" data-playing="no"></button>
-				<button id="fsButton">Full Screen</button>
-			</section>
-			<section>
-				Volume: <input type="range" id="volumeSlider" min="0" max="2" value="1" step="0.01">
-				<span id="volumeLabel">???</span>
-			</section>
+			<button id="fsButton">Full Screen</button>
 
 		</section>
-		<section class="uploadDiv">
+		<section class="chooseSongDiv">
 			<h3>Choose a Song</h3>
 			<hr>
-
 			<section>
 				<label for="upload">Upload a song:</label>
 				<br>
@@ -60,9 +65,11 @@
 			<label for="trackSelect">Or choose one of the preloaded tracks:</label>
 			<br>
 				<select id="trackSelect">
-					<option value="media/New Adventure Theme.mp3" selected>New Adventure Theme</option>
-					<option value="media/Peanuts Theme.mp3">Peanuts Theme</option>
-					<option value="media/The Picard Song.mp3">The Picard Song</option>
+					<option value="./assets/audio/New Adventure Theme.mp3" selected>New Adventure Theme</option>
+					<option value="./assets/audio/Peanuts Theme.mp3">Peanuts Theme</option>
+					<option value="./assets/audio/The Picard Song.mp3">The Picard Song</option>
+					<option value="./assets/audio/thx.mp3">THX Sound</option>
+
 				</select>
 
 		</section>

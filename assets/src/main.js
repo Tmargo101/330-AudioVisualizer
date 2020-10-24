@@ -5,48 +5,73 @@ import * as utils from './utils.js';
 
 // Declare constants
 const DEFAULTS = Object.freeze({
-	sound1  :  "./assets/audio/New Adventure Theme.mp3"
+	sound1  :  "./assets/audio/New Adventure Theme.mp3",
+	sound2  :  "./assets/audio/Peanuts Theme.mp3",
+	sound3  :  "./assets/audio/The Picard Song.mp3"
+
 });
 
 const windowParams = {
-   canvasWidth : 1000,
-   canvasHeight : 400,
+   waveformCanvasWidth : 1000,
+   waveformCanvasHeight : 75,
+	mainCanvasWidth : 1000,
+	mainCanvasHeight : 400,
 	playing : "no"
 }
 
 const drawParams = {
 	waveform : true,
+	showGradient : true,
+	showBars     : true,
+	showCircles  : true,
+	showNoise    : false,
+	showInvert   : false,
 	playHeadPosition : 0
 }
 
 const uploadFiles = "";
 
 
-
-
 const init = () => {
    audio.setupWebAudio(DEFAULTS.sound1);
 
-   let canvas = document.querySelector("canvas");
-   canvas.width = windowParams.canvasWidth;
-   canvas.height = windowParams.canvasHeight;
-   setupUI(canvas);
-   visualizer.setupCanvas(canvas, audio.analyserNode);
+   let waveformCanvas = document.querySelector("#waveformCanvas");
+   waveformCanvas.width = windowParams.waveformCanvasWidth;
+   waveformCanvas.height = windowParams.waveformCanvasHeight;
+   visualizer.setupWaveformCanvas(waveformCanvas, audio.analyserNode);
+
+	let mainCanvas = document.querySelector("#mainCanvas");
+	mainCanvas.width = windowParams.mainCanvasWidth;
+	mainCanvas.height = windowParams.mainCanvasHeight;
+	visualizer.setupMainCanvas(mainCanvas, audio.analyserNode);
+
+	setupUI();
    loop();
 };
 
 const loop = () => {
 	requestAnimationFrame(loop);
 
-	if (windowParams.playing == "yes") {
+	if (windowParams.playing == "yes" && drawParams.playHeadPosition >= windowParams.waveformCanvasWidth) {
+		drawParams.playHeadPosition == 0;
+	} else if (windowParams.playing == "yes") {
 		visualizer.drawPlayHead(drawParams.playHeadPosition);
-		drawParams.playHeadPosition += visualizer.barWidth / 3.25;
-		console.log("playHead at x=" + drawParams.playHeadPosition);
+		drawParams.playHeadPosition += visualizer.barWidth / 3.5;
+		visualizer.drawMain(drawParams);
 	}
 };
 
 
-const setupUI = (canvasElement) => {
+const setupUI = (waveformCanvas) => {
+
+	// A - hookup fullscreen button
+   const fsButton = document.querySelector("#fsButton");
+
+   // add .onclick event to button
+   fsButton.onclick = e => {
+     console.log("init called");
+     utils.goFullscreen(document.querySelector("#mainCanvas"));
+   };
 
 
    let volumeSlider = document.querySelector("#volumeSlider");
@@ -89,30 +114,92 @@ const setupUI = (canvasElement) => {
   };
 
   document.querySelector("#upload").onchange = (e) => {
-     if (playButton.dataset.playing = "yes") {
-        playButton.dispatchEvent(new MouseEvent("click"));
-     }
-
-	  if (drawParams.waveform) {
-		  document.querySelector("#playButton").disabled = true;
-		  document.querySelector("#playButton").dataset.playing = "processing";
-
-		  // read array buffer
-		  let fileReader  = new FileReader;
-		  fileReader.onload = function(){
-			  audio.loadArrayBuffer(this.result);
+	  if (event.target.files[0]) {
+		  if (playButton.dataset.playing = "yes") {
+			  playButton.dispatchEvent(new MouseEvent("click"));
 		  }
-		  fileReader.readAsArrayBuffer(event.target.files[0])
-	  }
 
-     // load sound file
-     var url = URL.createObjectURL(event.target.files[0]);
-     audio.loadSoundFile(url);
-	  drawParams.playHeadPosition = 0;
+
+		if (drawParams.waveform) {
+			document.querySelector("#playButton").disabled = true;
+			document.querySelector("#playButton").dataset.playing = "processing";
+
+			// read array buffer
+			let fileReader  = new FileReader;
+			fileReader.onload = function(){
+				audio.loadArrayBuffer(this.result);
+			}
+			fileReader.readAsArrayBuffer(event.target.files[0])
+		}
+
+
+		  // load sound file
+		  var url = URL.createObjectURL(event.target.files[0]);
+		  audio.loadSoundFile(url);
+		  drawParams.playHeadPosition = 0;
+	  }
 
 
      //audio.loadSoundFile(URL.createObjectURL(event.target.files[0]))
   };
+
+  let trackSelect = document.querySelector("#trackSelect");
+
+  // add onchange event to <select>
+  trackSelect.onchange = e => {
+
+	  if (playButton.dataset.playing == "yes") {
+		  playButton.dispatchEvent(new MouseEvent("click"));
+	  }
+	  audio.xhrLoadSoundFile(e.target.value);
+	  drawParams.playHeadPosition = 0;
+
+  };
+
+  audio.audioElement.onended = function(event) {
+	  document.querySelector("#playButton").dataset.playing = "no";
+	  drawParams.playHeadPosition = 0;
+	  windowParams.playing = "no";
+  }
+
+  let gradientCheckbox = document.querySelector("#gradientCB");
+  gradientCheckbox.onchange = e => {
+	  drawParams.showGradient = !drawParams.showGradient;
+  };
+
+  let barsCheckbox = document.querySelector("#barsCB");
+  barsCheckbox.onchange = e => {
+	  drawParams.showBars = !drawParams.showBars;
+  };
+
+  let circlesCheckbox = document.querySelector("#circlesCB");
+  circlesCheckbox.onchange = e => {
+	  drawParams.showCircles = !drawParams.showCircles;
+  };
+
+  let noiseCheckbox = document.querySelector("#noiseCB");
+  noiseCheckbox.onchange = e => {
+	  drawParams.showNoise = !drawParams.showNoise;
+  };
+
+  let invertCheckbox = document.querySelector("#invertCB");
+  invertCheckbox.onchange = e => {
+	  drawParams.showInvert = !drawParams.showInvert;
+  }
+
+  let embossCheckbox = document.querySelector("#embossCB");
+  embossCheckbox.onchange = e => {
+	  drawParams.showEmboss = !drawParams.showEmboss;
+  }
+
+
+
+  gradientCheckbox.checked = true;
+  barsCheckbox.checked = true;
+  circlesCheckbox.checked = true;
+  noiseCheckbox.checked = false;
+
+
 };
 
 

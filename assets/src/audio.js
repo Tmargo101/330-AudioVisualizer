@@ -1,7 +1,7 @@
 import * as visualizer from './visualizer.js';
 
 let audioCtx;
-let element;
+let audioElement, sourceNode, analyserNode, gainNode;
 
 let arrayBuffer = null;
 let freqencyData = [];
@@ -18,26 +18,56 @@ const setupWebAudio = (filePath) => {
    const AudioContext = window.AudioContext || window.webkitAudioContext;
    audioCtx = new AudioContext();
 
-   // 2 - this creates an <audio> element
-   element = new Audio();
+   // 2 - this creates an <audio> audioElement
+   audioElement = new Audio();
 
    // 3 - have it point at a sound file
-   loadSoundFile(filePath);
+   xhrLoadSoundFile(filePath);
 
-   // let fileReader  = new FileReader;
-   // fileReader.onload = function(event){
-   //    loadArrayBuffer(event.result);
-   // }
-   // fileReader.readAsArrayBuffer(filePath.files);
+   sourceNode = audioCtx.createMediaElementSource(audioElement);
+
+   analyserNode = audioCtx.createAnalyser();
+   analyserNode.fftSize = DEFAULTS.numSamples;
+
+   // 7 - create a gain (volume) node
+   gainNode = audioCtx.createGain();
+   gainNode.gain.value = DEFAULTS.gain;
+
+   // 8 - connect the nodes - we now have an audio graph
+   sourceNode.connect(analyserNode);
+   analyserNode.connect(gainNode);
+   gainNode.connect(audioCtx.destination);
 
 
 };
 
 const loadSoundFile = (filePath) => {
-   element.src = filePath;
+   audioElement.src = filePath;
+};
+
+const xhrLoadSoundFile = (filePath) => {
+
+   audioElement.src = filePath;
+
+
+   let xhr = new XMLHttpRequest();
+   xhr.open('GET', filePath, true);
+   xhr.responseType = 'arraybuffer';
+
+   xhr.onload = function(event) {
+      console.log(typeof this.response);
+
+      if (this.status == 200) {
+         loadArrayBuffer(this.response);
+      }
+   }
+
+   xhr.send();
 };
 
 const loadArrayBuffer = (testArrayBuffer) => {
+   document.querySelector("#playButton").disabled = true;
+   document.querySelector("#playButton").dataset.playing = "processing";
 
    // Clear the frequencyData Array
    freqencyData = [];
@@ -59,7 +89,8 @@ const loadArrayBuffer = (testArrayBuffer) => {
          if (count == 10) {
             let freqData = new Uint8Array(analyser.frequencyBinCount);
             analyser.getByteFrequencyData(freqData);
-            console.log(freqData);
+            // console.log(freqData);
+            // freqencyData.push(freqData);
             let sum = freqData.reduce(function(a, b) {return a + b;}, 0);
             if (sum != 0) {
                freqencyData.push(freqData);
@@ -79,16 +110,16 @@ const loadArrayBuffer = (testArrayBuffer) => {
 };
 
 const playCurrentSound = () => {
-   element.play();
+   audioElement.play();
 };
 
 const pauseCurrentSound = () => {
-   element.pause();
+   audioElement.pause();
 };
 
 const setVolume = (value) => {
    value = Number(value); // make sure that it's a Number rather than a String
-   //gainNode.gain.value = value;
+   gainNode.gain.value = value;
 };
 
 export {
@@ -99,9 +130,11 @@ export {
    setVolume,
    loadSoundFile,
    loadArrayBuffer,
+   xhrLoadSoundFile,
 
-   // Elements
+   // audioElements
    audioCtx,
-   freqencyData
-   //analyserNode
+   freqencyData,
+   audioElement,
+   analyserNode
 };
