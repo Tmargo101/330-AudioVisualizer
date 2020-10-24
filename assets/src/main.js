@@ -75,6 +75,7 @@ const setupUI = (waveformCanvas) => {
    let fsButton = document.querySelector("#fsButton");
 	let restartButton = document.querySelector("#restartPlaybackButton");
 	let volumeSlider = document.querySelector("#volumeSlider");
+	let panSlider = document.querySelector("#panSlider");
 	let trackSelect = document.querySelector("#trackSelect");
 	let uploadElement = document.querySelector("#upload");
 
@@ -107,7 +108,7 @@ const setupUI = (waveformCanvas) => {
 				}
 
 				// load sound file into the audio element
-				var url = URL.createObjectURL(event.target.files[0]);
+				let url = URL.createObjectURL(event.target.files[0]);
 				audio.loadSoundFile(url);
 				drawParams.playHeadPosition = 0;
 	   }
@@ -166,10 +167,10 @@ const setupUI = (waveformCanvas) => {
 
    };
 
-
-
-
-
+	panSlider.oninput = e => {
+		audio.setPan(e.target.value);
+		panLabel.innerHTML = `${Math.round((e.target.value / 2 * 100))} %`
+	}
 
   gradientCheckbox.onchange = e => {
 	  drawParams.showGradient = !drawParams.showGradient;
@@ -201,6 +202,7 @@ const setupUI = (waveformCanvas) => {
   barsCheckbox.checked = true;
   circlesCheckbox.checked = true;
   volumeSlider.dispatchEvent(new Event('input'));
+  panSlider.dispatchEvent(new Event('input'));
 
 
 

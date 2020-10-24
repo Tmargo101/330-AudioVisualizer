@@ -1,7 +1,7 @@
 import * as visualizer from './visualizer.js';
 
 let audioCtx;
-let audioElement, sourceNode, analyserNode, gainNode;
+let audioElement, sourceNode, analyserNode, gainNode, stereoPannerNode;
 
 let arrayBuffer = null;
 let freqencyData = [];
@@ -28,9 +28,17 @@ const setupWebAudio = (filePath) => {
    gainNode = audioCtx.createGain();
    gainNode.gain.value = DEFAULTS.gain;
 
+   stereoPannerNode = audioCtx.createStereoPanner();
+
+
+   // Audio Graph: sourceNode --> analyserNode --> gainNode --> stereoPannerNode --> destination
    sourceNode.connect(analyserNode);
+
    analyserNode.connect(gainNode);
-   gainNode.connect(audioCtx.destination);
+
+   gainNode.connect(stereoPannerNode);
+
+   stereoPannerNode.connect(audioCtx.destination);
 
 
 };
@@ -67,16 +75,17 @@ const loadArrayBuffer = (testArrayBuffer) => {
 
    // Clear the frequencyData Array
    freqencyData = [];
+
+   // DOCUMENT WHERE THIS CODE CAME FROM
    let audioBuffer = audioCtx.decodeAudioData(testArrayBuffer, function(e) {
 
-      // Start of code
-      var offline = new OfflineAudioContext(2, e.length ,44100);
-      var bufferSource = offline.createBufferSource();
+      let offline = new OfflineAudioContext(2, e.length ,44100);
+      let bufferSource = offline.createBufferSource();
       bufferSource.buffer = e;
 
-      var analyser = offline.createAnalyser();
+      let analyser = offline.createAnalyser();
       analyser.fftSize= 32;
-      var scp = offline.createScriptProcessor(256, 0, 1);
+      let scp = offline.createScriptProcessor(256, 0, 1);
 
       bufferSource.connect(analyser);
       scp.connect(offline.destination); // this is necessary for the script processor to start
@@ -104,6 +113,9 @@ const loadArrayBuffer = (testArrayBuffer) => {
 
       // Trigger the render event
       offline.startRendering();
+
+      // DOCUMENT WHERE THIS CODE CAME FROM
+
    });
 
 };
@@ -121,12 +133,18 @@ const setVolume = (value) => {
    gainNode.gain.value = value;
 };
 
+const setPan = (value) => {
+   value = Number(value);
+   stereoPannerNode.pan.value = value;
+}
+
 export {
    // Methods
    setupWebAudio,
    playCurrentSound,
    pauseCurrentSound,
    setVolume,
+   setPan,
    loadSoundFile,
    loadArrayBuffer,
    xhrLoadSoundFile,
