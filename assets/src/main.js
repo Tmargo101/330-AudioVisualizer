@@ -14,7 +14,7 @@ const DEFAULTS = Object.freeze({
 const windowParams = {
    waveformCanvasWidth : 1000,
    waveformCanvasHeight : 75,
-	mainCanvasWidth : 1000,
+	mainCanvasWidth : 800,
 	mainCanvasHeight : 400,
 	playing : "no"
 }
@@ -76,6 +76,8 @@ const setupUI = (waveformCanvas) => {
 	let restartButton = document.querySelector("#restartPlaybackButton");
 	let volumeSlider = document.querySelector("#volumeSlider");
 	let panSlider = document.querySelector("#panSlider");
+	let bassSlider = document.querySelector("#bassSlider");
+	let trebleSlider = document.querySelector("#trebleSlider");
 	let trackSelect = document.querySelector("#trackSelect");
 	let uploadElement = document.querySelector("#upload");
 
@@ -170,7 +172,18 @@ const setupUI = (waveformCanvas) => {
 	panSlider.oninput = e => {
 		audio.setPan(e.target.value);
 		panLabel.innerHTML = `${Math.round((e.target.value / 2 * 100))} %`
-	}
+	};
+
+	bassSlider.oninput = e => {
+		audio.setBass(e.target.value);
+		bassLabel.innerHTML = `${Math.round((e.target.value / 2 * 100))} %`
+	};
+
+	trebleSlider.oninput = e => {
+		audio.setTreble(e.target.value);
+		trebleLabel.innerHTML = `${Math.round((e.target.value / 2 * 100))} %`
+	};
+
 
   gradientCheckbox.onchange = e => {
 	  drawParams.showGradient = !drawParams.showGradient;

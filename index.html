@@ -19,14 +19,31 @@
 				<h1>Audio Sandbox</h1>
 			</div>
 		</div>
-
 		<section class="audioVisualizerDiv">
-			<canvas id="mainCanvas"></canvas>
-		</section>
-		<section class="waveformVisualizerDiv">
-			<article class="waveformDiv">
+			<section class="visualizerControlsDiv">
+				<h3>Visualization Controls</h3>
+				<p>More controls will go here</p>
+				<section>
+					<span><input type="checkbox" id="gradientCB"><label for="gradientCB">Show Gradient</label></span>
+					<span><input type="checkbox" id="barsCB"><label for="barsCB">Show Bars</label></span>
+					<span><input type="checkbox" id="circlesCB"><label for="circlesCB">Show Circles</label></span>
+					<span><input type="checkbox" id="noiseCB"><label for="noiseCB">Show Noise</label></span>
+					<span><input type="checkbox" id="invertCB"><label for="invertCB">Invert Colors</label></span>
+					<span><input type="checkbox" id="embossCB"><label for="embossCB">Emboss</label></span>
+
+				</section>
+				<button id="fsButton">Full Screen</button>
+
+			</section>
+			<section class="mainVisualizerDiv">
+				<canvas id="mainCanvas"></canvas>
+			</section>
+			<section class="waveformDiv">
 				<canvas id="waveformCanvas"></canvas>
-			</article>
+			</section>
+
+		</section>
+		<section class="controlsDiv">
 			<div class="restartButtonDiv">
 				<button id="restartPlaybackButton">Restart Playback</button>
 			</div>
@@ -44,47 +61,44 @@
 				<br>
 				<span id="panLabel">???</span>
 			</div>
+			<div class="bassTrebleSliderDiv">
+				Bass: <input type="range" id="bassSlider" min="0" max="200" value="0" step="1">
+				<br>
+				<span id="bassLabel">???</span>
+				<br>
+				Treble: <input type="range" id="trebleSlider" min="0" max="200" value="0" step="1">
+				<br>
+				<span id="trebleLabel">???</span>
+				<br>
+
+			</div>
 
 
-		</section>
-		<section class="visualizerControlsDiv">
-			<h3>Visualization Controls</h3>
-			<p>More controls will go here</p>
-			<section>
-				<span><input type="checkbox" id="gradientCB"><label for="gradientCB">Show Gradient</label></span>
-				<span><input type="checkbox" id="barsCB"><label for="barsCB">Show Bars</label></span>
-				<span><input type="checkbox" id="circlesCB"><label for="circlesCB">Show Circles</label></span>
-				<span><input type="checkbox" id="noiseCB"><label for="noiseCB">Show Noise</label></span>
-				<span><input type="checkbox" id="invertCB"><label for="invertCB">Invert Colors</label></span>
-				<span><input type="checkbox" id="embossCB"><label for="embossCB">Emboss</label></span>
+			<section class="chooseSongDiv">
+				<h3>Choose a Song</h3>
+				<hr>
+				<section>
+					<label for="upload">Upload a song:</label>
+					<br>
+					<input type="file" id="upload" title="Upload File" accept="audio/*"/>
+					<br>
+				</section>
+				<hr>
+				<label for="trackSelect">Or choose one of the preloaded tracks:</label>
+				<br>
+					<select id="trackSelect">
+						<option value="./assets/audio/New Adventure Theme.mp3" selected>New Adventure Theme</option>
+						<option value="./assets/audio/Peanuts Theme.mp3">Peanuts Theme</option>
+						<option value="./assets/audio/The Picard Song.mp3">The Picard Song</option>
+						<option value="./assets/audio/thx.mp3">THX Sound</option>
+
+					</select>
 
 			</section>
-			<button id="fsButton">Full Screen</button>
-
-		</section>
-		<section class="chooseSongDiv">
-			<h3>Choose a Song</h3>
-			<hr>
-			<section>
-				<label for="upload">Upload a song:</label>
-				<br>
-				<input type="file" id="upload" title="Upload File" accept="audio/*"/>
-				<br>
+			<section class="descriptionDiv">
+				<h3>About this Application</h3>
 			</section>
-			<hr>
-			<label for="trackSelect">Or choose one of the preloaded tracks:</label>
-			<br>
-				<select id="trackSelect">
-					<option value="./assets/audio/New Adventure Theme.mp3" selected>New Adventure Theme</option>
-					<option value="./assets/audio/Peanuts Theme.mp3">Peanuts Theme</option>
-					<option value="./assets/audio/The Picard Song.mp3">The Picard Song</option>
-					<option value="./assets/audio/thx.mp3">THX Sound</option>
 
-				</select>
-
-		</section>
-		<section class="descriptionDiv">
-			<h3>About this Application</h3>
 		</section>
 	</div>
 

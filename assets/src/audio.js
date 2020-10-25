@@ -1,7 +1,7 @@
 import * as visualizer from './visualizer.js';
 
 let audioCtx;
-let audioElement, sourceNode, analyserNode, gainNode, stereoPannerNode;
+let audioElement, sourceNode, analyserNode, gainNode, bassNode, trebleNode, stereoPannerNode;
 
 let arrayBuffer = null;
 let freqencyData = [];
@@ -21,26 +21,37 @@ const setupWebAudio = (filePath) => {
    xhrLoadSoundFile(filePath);
 
    sourceNode = audioCtx.createMediaElementSource(audioElement);
-   analyserNode = audioCtx.createAnalyser();
 
+   analyserNode = audioCtx.createAnalyser();
    analyserNode.fftSize = DEFAULTS.numSamples;
 
    gainNode = audioCtx.createGain();
    gainNode.gain.value = DEFAULTS.gain;
 
+   bassNode = audioCtx.createBiquadFilter();
+   bassNode.type = "lowshelf";
+
+   trebleNode = audioCtx.createBiquadFilter();
+   trebleNode.type = "highshelf";
+
    stereoPannerNode = audioCtx.createStereoPanner();
 
 
-   // Audio Graph: sourceNode --> analyserNode --> gainNode --> stereoPannerNode --> destination
-   sourceNode.connect(analyserNode);
+   // Audio Graph: sourceNode --> gainNode --> trebleNode --> bassNode --> analyserNode --> stereoPannerNode --> destination
+   sourceNode.connect(gainNode);
 
-   analyserNode.connect(gainNode);
+   gainNode.connect(trebleNode);
 
-   gainNode.connect(stereoPannerNode);
+   trebleNode.connect(bassNode);
+
+   bassNode.connect(analyserNode);
+
+   analyserNode.connect(stereoPannerNode);
 
    stereoPannerNode.connect(audioCtx.destination);
 
-
+   console.log("Frequnecy: " + trebleNode.frequency.value);
+   console.log("Gain: " + trebleNode.gain.value);
 };
 
 const loadSoundFile = (filePath) => {
@@ -66,6 +77,38 @@ const xhrLoadSoundFile = (filePath) => {
 
    // Trigger the xhr.onload event
    xhr.send();
+};
+
+
+const playCurrentSound = () => {
+   audioElement.play();
+};
+
+const pauseCurrentSound = () => {
+   audioElement.pause();
+};
+
+const setVolume = (value) => {
+   value = Number(value); // make sure that it's a Number rather than a String
+   gainNode.gain.value = value;
+};
+
+const setPan = (value) => {
+   value = Number(value);
+   stereoPannerNode.pan.value = value;
+};
+
+const setBass = (value) => {
+   value = Number(value);
+   bassNode.frequency.setValueAtTime(value, audioCtx.currentTime);
+   bassNode.gain.setValueAtTime(25, audioCtx.currentTime);
+};
+
+const setTreble = (value) => {
+   console.log(trebleNode.frequency.value);
+   value = Number(value);
+   trebleNode.frequency.setValueAtTime(value, audioCtx.currentTime);
+   trebleNode.gain.setValueAtTime(0, audioCtx.currentTime);
 };
 
 const loadArrayBuffer = (testArrayBuffer) => {
@@ -120,24 +163,6 @@ const loadArrayBuffer = (testArrayBuffer) => {
 
 };
 
-const playCurrentSound = () => {
-   audioElement.play();
-};
-
-const pauseCurrentSound = () => {
-   audioElement.pause();
-};
-
-const setVolume = (value) => {
-   value = Number(value); // make sure that it's a Number rather than a String
-   gainNode.gain.value = value;
-};
-
-const setPan = (value) => {
-   value = Number(value);
-   stereoPannerNode.pan.value = value;
-}
-
 export {
    // Methods
    setupWebAudio,
@@ -145,6 +170,8 @@ export {
    pauseCurrentSound,
    setVolume,
    setPan,
+   setBass,
+   setTreble,
    loadSoundFile,
    loadArrayBuffer,
    xhrLoadSoundFile,

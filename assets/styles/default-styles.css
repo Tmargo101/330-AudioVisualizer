@@ -6,21 +6,19 @@
 }
 
 body {
-   background: #eeeeee;
+   background: rgb(79,55,245);
    font-family: "San Fransisco";
 }
 
 .grid-container {
   display: grid;
-  grid-template-columns: 10% 1fr 1fr 1fr 10%;
-  grid-template-rows: 5% 1fr min-content 1fr 1fr 5%;
+  grid-template-columns: 7.5% min-content auto min-content 7.5%;
+  grid-template-rows: min-content 1fr min-content 5%;
   gap: 1% 1%;
   grid-template-areas:
     ". . headerDiv . ."
     ". audioVisualizerDiv audioVisualizerDiv audioVisualizerDiv ."
-    ". waveformVisualizerDiv waveformVisualizerDiv waveformVisualizerDiv ."
-    ". chooseSongDiv visualizerControlsDiv visualizerControlsDiv ."
-    ". descriptionDiv descriptionDiv descriptionDiv ."
+    ". controlsDiv controlsDiv controlsDiv ."
     ". . . . .";
 }
 
@@ -40,23 +38,42 @@ section {
 
 .audioVisualizerDiv {
    grid-area: audioVisualizerDiv;
-   background-color: blue;
+
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   grid-template-rows: 1fr min-content;
+   gap: 1% 1%;
+   grid-template-areas:
+   "waveformDiv waveformDiv"
+   "visualizerControlsDiv mainVisualizerDiv";
+
+   background-color: rgb(105,55,245);
 }
 
-.waveformVisualizerDiv {
-   grid-area: waveformVisualizerDiv;
+.mainVisualizerDiv {
+   grid-area: mainVisualizerDiv;
+}
+
+.visualizerControlsDiv {
+   grid-area: visualizerControlsDiv;
+   background-color: rgb(130,75,250);
+}
+
+
+.controlsDiv {
+   grid-area: controlsDiv;
    background-color: rgb(25,25,25);
    text-align: center;
    color: white;
 
    display: grid;
    grid-template-columns: 1fr 1fr 1fr;
-   grid-template-rows: 1fr 1fr 1fr;
-   gap: 15% 1%;
+   grid-template-rows: min-content min-content max-content;
+   gap: 10% 1%;
    grid-template-areas:
-     "waveformDiv waveformDiv waveformDiv"
      "restartButtonDiv playbackControlsDiv volumeControlDiv"
-     ". panSliderDiv .";
+     "bassTrebleSliderDiv panSliderDiv ."
+     "chooseSongDiv descriptionDiv descriptionDiv";
 }
 
 .waveformDiv {
@@ -95,18 +112,16 @@ section {
 
 .descriptionDiv {
    grid-area: descriptionDiv;
+   color: black;
    background-color: gray;
  }
 
 .chooseSongDiv {
    grid-area: chooseSongDiv;
+   color: black;
    background-color: gold;
 }
 
-.visualizerControlsDiv {
-   grid-area: visualizerControlsDiv;
-   background-color: green;
-}
 
 
 
