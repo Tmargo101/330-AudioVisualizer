@@ -105,10 +105,9 @@ const setBass = (value) => {
 };
 
 const setTreble = (value) => {
-   console.log(trebleNode.frequency.value);
    value = Number(value);
-   trebleNode.frequency.setValueAtTime(value, audioCtx.currentTime);
-   trebleNode.gain.setValueAtTime(0, audioCtx.currentTime);
+   // trebleNode.frequency.setValueAtTime(value, audioCtx.currentTime);
+   trebleNode.gain.setValueAtTime(value, audioCtx.currentTime);
 };
 
 const loadArrayBuffer = (testArrayBuffer) => {

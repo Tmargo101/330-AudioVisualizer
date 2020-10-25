@@ -171,17 +171,26 @@ const setupUI = (waveformCanvas) => {
 
 	panSlider.oninput = e => {
 		audio.setPan(e.target.value);
-		panLabel.innerHTML = `${Math.round((e.target.value / 2 * 100))} %`
+		let value = Math.round((e.target.value * 100));
+		let panText = "";
+		if (Math.sign(value) == -1) {
+			panText = "Left";
+		} else if (Math.sign(value) == 1){
+			panText = "Right";
+		} else {
+			panText = "";
+		}
+		panLabel.innerHTML = `${Math.abs(value)} % ${panText}`;
 	};
 
 	bassSlider.oninput = e => {
 		audio.setBass(e.target.value);
-		bassLabel.innerHTML = `${Math.round((e.target.value / 2 * 100))} %`
+		bassLabel.innerHTML = `${Math.round((e.target.value / 2))} %`
 	};
 
 	trebleSlider.oninput = e => {
 		audio.setTreble(e.target.value);
-		trebleLabel.innerHTML = `${Math.round((e.target.value / 2 * 100))} %`
+		trebleLabel.innerHTML = `${Math.round((e.target.value / 2 * 10))} %`
 	};
 
 
@@ -216,6 +225,8 @@ const setupUI = (waveformCanvas) => {
   circlesCheckbox.checked = true;
   volumeSlider.dispatchEvent(new Event('input'));
   panSlider.dispatchEvent(new Event('input'));
+  trebleSlider.dispatchEvent(new Event('input'));
+  bassSlider.dispatchEvent(new Event('input'));
 
 
 
