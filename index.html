@@ -10,6 +10,9 @@
 </head>
 <body>
 	<main>
+	<div class="useChromium">
+		<h1>This application requires a Chromium-based browser.</h1>
+	</div>
 	<div class="grid-container">
 		<div class="headerDiv">
 			<div class="logoDiv">
@@ -82,8 +85,8 @@
 				<span id="trebleLabel">???</span>
 				<br>
 			</div>
-			<div>
-				<span id="radioVisSpan"><label for="radioVisSpan"><u>Audio Type for Visualization:</u></label><br><br>
+			<div class="radioVisualizationDiv">
+				<span id="radioVisSpan"><label for="radioVisSpan">Audio Type for Visualization:</label><br><br>
 					<input type="radio" id="freqRadio" name="radioAudioType" value="frequency" checked><label for="freqRadio">Frequency</label>
 					<input type="radio" id="waveRadio" name="radioAudioType" value="waveform"><label for="waveRadio">Waveform</label><br>
 				</span>
@@ -116,6 +119,11 @@
 			</section>
 			<section class="descriptionDiv">
 				<h3>About this Application</h3>
+				<p>This application is a visualization sandbox, where you can upload any music or aduio file & play with it's audio properties, as well as generate interesting visualization effects.
+				<p>Notes:</p>
+				<ul>
+					<li>This application is only available in Chromium-based browsers (Google Chrome, Microsoft Edge, Opera, etc.)</li>
+				</ul>
 			</section>
 
 		</section>

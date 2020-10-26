@@ -19,7 +19,7 @@ const windowParams = {
 const drawParams = {
 	waveform : true,
 	showBars     : false,
-	showCircles  : true,
+	showCircles  : false,
 	showCircularBars : true,
 	showKnightRider : false,
 	showKRScanner : false,
@@ -86,10 +86,6 @@ const setupUI = (waveformCanvas) => {
 	let kittCheckbox = document.querySelector("#kittCB");
 	let kittScannerCheckbox = document.querySelector("#kittScannerCB");
 
-	// let noiseCheckbox = document.querySelector("#noiseCB");
-	// let invertCheckbox = document.querySelector("#invertCB");
-	// let embossCheckbox = document.querySelector("#embossCB");
-
 	let colorRadioButtons = document.querySelectorAll('input[type=radio][name="radioColor"]');
 
 	colorRadioButtons.forEach(radio => radio.addEventListener('change', () => drawParams.radioButtonColor = radio.value));
@@ -140,6 +136,7 @@ const setupUI = (waveformCanvas) => {
 	   document.querySelector("#playButton").dataset.playing = "no";
 	   drawParams.playHeadPosition = 0;
 	   windowParams.playing = "no";
+		audio.xhrLoadSoundFile(audio.audioElement.src);
 	}
 
 	playButton.onclick = e => {
@@ -227,7 +224,7 @@ const setupUI = (waveformCanvas) => {
 
 	// Setup the view elements on load
   barsCheckbox.checked = false;
-  circlesCheckbox.checked = true;
+  circlesCheckbox.checked = false;
   circularBarsCheckbox.checked = true;
   kittCheckbox.checked = false;
   kittScannerCheckbox.checked = false;

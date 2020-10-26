@@ -8,7 +8,7 @@
 body {
    background: rgb(79,55,245);
    font-family: "San Fransisco";
-   
+
 }
 
 .grid-container {
@@ -70,13 +70,13 @@ section {
 
    display: grid;
    grid-template-columns: 1fr 1fr 1fr;
-   grid-template-rows:  1fr min-content min-content 1fr 1fr 0.5fr;
-   gap: 10% 1%;
+   grid-template-rows: 0.1% min-content min-content 1fr 0.4fr;
+   gap: 7% 1%;
    grid-template-areas:
-     "restartButtonDiv playbackControlsDiv volumeControlDiv"
-     "bassTrebleSliderDiv panSliderDiv ."
-     "chooseSongDiv descriptionDiv descriptionDiv"
      ". . ."
+     "restartButtonDiv playbackControlsDiv volumeControlDiv"
+     "bassTrebleSliderDiv panSliderDiv radioVisualizationDiv"
+     "chooseSongDiv chooseSongDiv descriptionDiv"
      ". . .";
 }
 
@@ -101,6 +101,14 @@ section {
    grid-area: restartButtonDiv;
 }
 
+.radioVisualizationDiv {
+   grid-area: radioVisualizationDiv;
+}
+
+.bassTrebleSliderDiv {
+   grid-area: bassTrebleSliderDiv;
+}
+
 .titleDiv {
    grid-area: titleDiv;
    text-align: left;
@@ -119,12 +127,13 @@ section {
    grid-area: descriptionDiv;
    color: black;
    background-color: gray;
+   text-align: left;
  }
 
 .chooseSongDiv {
    grid-area: chooseSongDiv;
-   color: black;
-   background-color: gold;
+   color: white;
+   background-color: rgb(75,75,75);
 }
 
 canvas {
@@ -157,8 +166,17 @@ button[data-playing="processing"]:after{
 }
 
 input[type=file] {
-   border: 2px dashed red;
+   border: 2px dashed white;
    padding: 20px;
    margin-top: 10px;
    margin-bottom: 10px;
+}
+
+.useChromium {
+   display: none;
+   width: 100vw;
+   height: 100vh;
+   z-index: 100;
+   text-align: center;
+   background-color: rgba(25,25,25,0.5);
 }

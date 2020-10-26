@@ -70,49 +70,41 @@ const drawMain = (params = {}) => {
 
    // 4 - draw bars
    if (params.showBars) {
-      let barSpacing = 4;
+      let barSpacing = 0;
       let margin = 5;
       let screenWidthForBars = mainCanvasWidth - (rtAudioData.length * barSpacing) - margin * 2;
       let barWidth = screenWidthForBars / rtAudioData.length;
-      let barHeight = 500;
+      let barHeight = 5;
       let topSpacing = 100;
 
      mainCtx.save();
-	  mainCtx.fillStyle = params.radioButtonColor;
+
+	  let gradient = mainCtx.createLinearGradient(0,0,mainCanvasWidth,0);
+
+	  gradient.addColorStop(0,"black");
+	  gradient.addColorStop(0.1,params.radioButtonColor);
+	  gradient.addColorStop(0.9,params.radioButtonColor);
+
+	  gradient.addColorStop(1, "black");
+
+	  mainCtx.fillStyle = gradient;
      // mainCtx.fillStyle = 'rgba(255,255,255,0.5)';
      mainCtx.strokeStyle = 'rgba(0,0,0,0.5)';
       for (let i = 0; i < rtAudioData.length; i++) {
         mainCtx.fillRect(
             margin + i * (barWidth + barSpacing),
-            topSpacing + 256 - rtAudioData[i],
+            350 - rtAudioData[i] / 2,
             barWidth,
             barHeight
          );
         mainCtx.strokeRect(
             margin + i * (barWidth + barSpacing),
-            topSpacing + 256 - rtAudioData[i],
+            topSpacing + 256 - rtAudioData[i] / 2,
             barWidth,
             barHeight
          );
 
       }
-
-		// for (let i = 0; i < rtAudioWaveformData.length; i++) {
-		//   mainCtx.fillRect(
-		// 		margin + i * (barWidth + barSpacing),
-		// 		topSpacing + 256 - rtAudioWaveformData[i],
-		// 		barWidth,
-		// 		barHeight
-		// 	);
-		//   mainCtx.strokeRect(
-		// 		margin + i * (barWidth + barSpacing),
-		// 		topSpacing + 256 - rtAudioWaveformData[i],
-		// 		barWidth,
-		// 		barHeight
-		// 	);
-		//
-		// }
-
      mainCtx.restore();
    }
 
@@ -123,9 +115,18 @@ const drawMain = (params = {}) => {
 
 		mainCtx.save();
 		mainCtx.translate(mainCanvasWidth / 2, mainCanvasHeight / 2);
-		mainCtx.strokeStyle = params.radioButtonColor;
+
+		// let gradient = mainCtx.createRadialGradient(mainCanvasWidth/2, mainCanvasHeight/2, 0, mainCanvasWidth/2, mainCanvasHeight/2, 200);
+		let gradient = mainCtx.createLinearGradient(0,0,100,100);
+
+		gradient.addColorStop(0,"red");
+		gradient.addColorStop(0.5,params.radioButtonColor)
+		gradient.addColorStop(1, "green");
+
+		mainCtx.strokeStyle = gradient;
+
 		for (let i = 0; i < rtAudioData.length; i++) {
-			mainCtx.fillStyle = params.radioButtonColor;
+			mainCtx.fillStyle = gradient;
 			// mainCtx.fillRect(10, 0, rtAudioData[i] / 2.25, barWidth);
 			// mainCtx.fillStyle = "green";
 			mainCtx.fillRect(125, 0, -(rtAudioData[i] / 3), barWidth);
@@ -141,7 +142,7 @@ const drawMain = (params = {}) => {
 		let barWidth = 65;
 
 		mainCtx.save();
-		mainCtx.translate(mainCanvasWidth / 2, mainCanvasHeight / 3.0);
+		mainCtx.translate(mainCanvasWidth / 2, mainCanvasHeight / 2.5);
 		mainCtx.strokeStyle = params.radioButtonColor;
 		mainCtx.fillStyle = params.radioButtonColor;
 
@@ -186,7 +187,7 @@ const drawMain = (params = {}) => {
 
 		mainCtx.translate(mainCanvasWidth / 4, mainCanvasHeight / 3.0);
 
-		mainCtx.fillRect(scannerPosition, 200, 80, 30);
+		mainCtx.fillRect(scannerPosition, 240, 80, 30);
 
 		if (scannerPosition > 300) {
 			scannerDirection = "left";
