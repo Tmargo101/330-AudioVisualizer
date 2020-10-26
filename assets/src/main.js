@@ -207,14 +207,34 @@ const setupUI = (waveformCanvas) => {
 
   circlesCheckbox.onchange = e => {
 	  drawParams.showCircles = !drawParams.showCircles;
+	  if (drawParams.showCircularBars || drawParams.showKnightRider) {
+		  drawParams.showKnightRider = false;
+		  drawParams.showCircularBars = false;
+		  kittCheckbox.checked = false;
+		  circularBarsCheckbox.checked = false;
+	  }
+
   };
 
   circularBarsCheckbox.onchange = e => {
 	  drawParams.showCircularBars = !drawParams.showCircularBars;
+	  if (drawParams.showCircles || drawParams.showKnightRider) {
+		  drawParams.showKnightRider = false;
+		  drawParams.showCircles = false;
+		  kittCheckbox.checked = false;
+		  circlesCheckbox.checked = false;
+	  }
   }
 
   kittCheckbox.onchange = e => {
 	drawParams.showKnightRider = !drawParams.showKnightRider;
+	if (drawParams.showCircularBars || drawParams.showCircles) {
+		drawParams.showCircularBars = false;
+		drawParams.showCircles = false;
+		circularBarsCheckbox.checked = false;
+		circlesCheckbox.checked = false;
+	}
+
   };
 
   kittScannerCheckbox.onchange = e => {

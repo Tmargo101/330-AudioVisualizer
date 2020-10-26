@@ -81,11 +81,11 @@ const drawMain = (params = {}) => {
 
 	  let gradient = mainCtx.createLinearGradient(0,0,mainCanvasWidth,0);
 
-	  gradient.addColorStop(0,"black");
-	  gradient.addColorStop(0.1,params.radioButtonColor);
-	  gradient.addColorStop(0.9,params.radioButtonColor);
+	  gradient.addColorStop(0,"gray");
+	  gradient.addColorStop(0.4,params.radioButtonColor);
+	  gradient.addColorStop(0.6,params.radioButtonColor);
 
-	  gradient.addColorStop(1, "black");
+	  gradient.addColorStop(1, "gray");
 
 	  mainCtx.fillStyle = gradient;
      // mainCtx.fillStyle = 'rgba(255,255,255,0.5)';
@@ -93,7 +93,7 @@ const drawMain = (params = {}) => {
       for (let i = 0; i < rtAudioData.length; i++) {
         mainCtx.fillRect(
             margin + i * (barWidth + barSpacing),
-            350 - rtAudioData[i] / 2,
+            375 - rtAudioData[i] / 2,
             barWidth,
             barHeight
          );
