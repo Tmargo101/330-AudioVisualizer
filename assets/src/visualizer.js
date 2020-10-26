@@ -2,10 +2,11 @@ import * as utils from './utils.js';
 
 let waveformCtx,waveformCanvasWidth,waveformCanvasHeight;
 let mainCtx, mainCanvasWidth, mainCanvasHeight;
-let gradient,analyserNode,rtAudioFreqencyData, rtAudioWaveformData;
+let gradient,analyserNode,rtAudioFreqencyData, rtAudioWaveformData, rtAudioData;
 
 let barWidth = 0;
 let xPosition = 0;
+let scannerPosition = 0, scannerDirection = "left", scannerCount = 0;
 
 const setupWaveformCanvas = (waveformCanvasElement, data) => {
 	// create drawing context
@@ -30,6 +31,7 @@ const setupMainCanvas = (mainCanvasElement, analyserNodeRef) => {
 	// this is the array where the analyser data will be stored
 	rtAudioFreqencyData = new Uint8Array(analyserNode.fftSize/2);
 	rtAudioWaveformData = new Uint8Array(analyserNode.fftSize/2);
+	rtAudioData = new Uint8Array(analyserNode.fftSize/2);
 
 
 };
@@ -41,6 +43,15 @@ const drawMain = (params = {}) => {
 	// OR
 	analyserNode.getByteTimeDomainData(rtAudioWaveformData); // waveform data
 
+	if (params.drawType == "frequency") {
+		for (let i = 0; i < rtAudioFreqencyData.length; i++){
+			rtAudioData[i] = rtAudioFreqencyData[i];
+		}
+	} else {
+		for (let i = 0; i < rtAudioWaveformData.length; i++){
+			rtAudioData[i] = rtAudioWaveformData[i];
+		}
+	}
 	// 2 - draw background
   mainCtx.save();
   mainCtx.fillStyle = "black";
@@ -61,24 +72,25 @@ const drawMain = (params = {}) => {
    if (params.showBars) {
       let barSpacing = 4;
       let margin = 5;
-      let screenWidthForBars = mainCanvasWidth - (rtAudioFreqencyData.length * barSpacing) - margin * 2;
-      let barWidth = screenWidthForBars / rtAudioFreqencyData.length;
+      let screenWidthForBars = mainCanvasWidth - (rtAudioData.length * barSpacing) - margin * 2;
+      let barWidth = screenWidthForBars / rtAudioData.length;
       let barHeight = 500;
       let topSpacing = 100;
 
      mainCtx.save();
-     mainCtx.fillStyle = 'rgba(255,255,255,0.5)';
+	  mainCtx.fillStyle = params.radioButtonColor;
+     // mainCtx.fillStyle = 'rgba(255,255,255,0.5)';
      mainCtx.strokeStyle = 'rgba(0,0,0,0.5)';
-      for (let i = 0; i < rtAudioFreqencyData.length; i++) {
+      for (let i = 0; i < rtAudioData.length; i++) {
         mainCtx.fillRect(
             margin + i * (barWidth + barSpacing),
-            topSpacing + 256 - rtAudioFreqencyData[i],
+            topSpacing + 256 - rtAudioData[i],
             barWidth,
             barHeight
          );
         mainCtx.strokeRect(
             margin + i * (barWidth + barSpacing),
-            topSpacing + 256 - rtAudioFreqencyData[i],
+            topSpacing + 256 - rtAudioData[i],
             barWidth,
             barHeight
          );
@@ -104,15 +116,107 @@ const drawMain = (params = {}) => {
      mainCtx.restore();
    }
 
+	if (params.showCircularBars) {
+		let barSpacing = 1;
+		let barWidth = 2;
+		let circleRotation = 15 / rtAudioData.length;
+
+		mainCtx.save();
+		mainCtx.translate(mainCanvasWidth / 2, mainCanvasHeight / 2);
+		mainCtx.strokeStyle = params.radioButtonColor;
+		for (let i = 0; i < rtAudioData.length; i++) {
+			mainCtx.fillStyle = params.radioButtonColor;
+			// mainCtx.fillRect(10, 0, rtAudioData[i] / 2.25, barWidth);
+			// mainCtx.fillStyle = "green";
+			mainCtx.fillRect(125, 0, -(rtAudioData[i] / 3), barWidth);
+			mainCtx.fillRect(125, 0, (rtAudioData[i] / 4), barWidth);
+			mainCtx.rotate(circleRotation);
+		}
+
+		mainCtx.restore();
+	}
+
+	if (params.showKnightRider) {
+		let barSpacing = 1;
+		let barWidth = 65;
+
+		mainCtx.save();
+		mainCtx.translate(mainCanvasWidth / 2, mainCanvasHeight / 3.0);
+		mainCtx.strokeStyle = params.radioButtonColor;
+		mainCtx.fillStyle = params.radioButtonColor;
+
+		// Average frequencies
+		let total = 0;
+		for(let i = 0; i < rtAudioData.length; i++) {
+		    total += rtAudioData[i];
+		}
+		let avg = total / rtAudioData.length ;
+
+
+		// for (let i = 0; i < rtAudioData.length; i++) {
+
+			let centerBars = avg / 8;
+			let sideBars = avg / 16;
+
+			for (let y = 0; y < centerBars; y++) {
+				mainCtx.fillRect(-(barWidth / 2) + y ,y * 8, barWidth - (y * 2) , 4);
+				mainCtx.fillRect(-(barWidth / 2) + y ,-(y * 8), barWidth - (y * 2), 4);
+			}
+
+			for (let y = 0; y < sideBars; y++) {
+				mainCtx.fillRect((-(barWidth / 2) + y) + 75 , y * 8, barWidth - (y * 2) , 4);
+				mainCtx.fillRect((-(barWidth / 2) + y) + 75 , -(y * 8), barWidth - (y * 2), 4);
+
+				mainCtx.fillRect((-(barWidth / 2) + y) - 75 , y * 8, barWidth - (y * 2) , 4);
+				mainCtx.fillRect((-(barWidth / 2) + y) - 75 , -(y * 8), barWidth - (y * 2), 4);
+
+				// mainCtx.fillRect(-(barWidth / 2) + y) ,y * 8, barWidth - (y * 2) , 4);
+				// mainCtx.fillRect(-(barWidth / 2) + y) ,-(y * 8), barWidth - (y * 2), 4);
+			}
+
+
+		mainCtx.restore();
+
+	}
+
+	if (params.showKRScanner) {
+		mainCtx.save();
+		mainCtx.strokeStyle = params.radioButtonColor;
+		mainCtx.fillStyle = params.radioButtonColor;
+
+		mainCtx.translate(mainCanvasWidth / 4, mainCanvasHeight / 3.0);
+
+		mainCtx.fillRect(scannerPosition, 200, 80, 30);
+
+		if (scannerPosition > 300) {
+			scannerDirection = "left";
+		} else if (scannerPosition < 0) {
+			scannerDirection = "right";
+		}
+		if (scannerCount == 5) {
+			if (scannerDirection == "left") {
+				scannerPosition -= 50;
+			} else {
+				scannerPosition += 50;
+			}
+			scannerCount = 0;
+
+		}
+
+		scannerCount += 1;
+		mainCtx.restore();
+	}
+
+
 	// 5 - draw circles
    if (params.showCircles) {
       let maxRadius = mainCanvasHeight / 4;
 
      mainCtx.save();
      mainCtx.globalAlpha = 0.5;
-      for (let i = 0; i < rtAudioFreqencyData.length; i++) {
+      for (let i = 0; i < rtAudioData.length; i++) {
          // redish circles
-         let percent = rtAudioFreqencyData[i] / 255;
+         let percent = rtAudioData[i] / 255;
 
          let circleRadius = percent * maxRadius;
         mainCtx.beginPath();

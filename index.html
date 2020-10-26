@@ -25,20 +25,26 @@
 			</section>
 			<section class="visualizerControlsDiv">
 				<h3>Visualization Controls</h3>
-				<p>More controls will go here</p>
+				<hr>
 				<section>
-					<span><input type="checkbox" id="gradientCB"><label for="gradientCB">Show Gradient</label></span>
-					<br>
 					<span><input type="checkbox" id="barsCB"><label for="barsCB">Show Bars</label></span>
 					<br>
 					<span><input type="checkbox" id="circlesCB"><label for="circlesCB">Show Circles</label></span>
 					<br>
-					<span><input type="checkbox" id="noiseCB"><label for="noiseCB">Show Noise</label></span>
+					<span><input type="checkbox" id="circularBarsCB"><label for="circleBarsCB">Show Circular Bars</label></span>
 					<br>
-					<span><input type="checkbox" id="invertCB"><label for="invertCB">Invert Colors</label></span>
+					<span><input type="checkbox" id="kittCB"><label for="kittCB">Show KITT</label></span>
 					<br>
-					<span><input type="checkbox" id="embossCB"><label for="embossCB">Emboss</label></span>
-
+					<span><input type="checkbox" id="kittScannerCB"><label for="kittScannerCB">Show KITT Scanner</label></span>
+					<br>
+					<hr>
+					<span id="radioSpan"><label for="radioSpan">Visualization Color:</label><br>
+						<input type="radio" id="redRadio" name="radioColor" value="rgb(255,0,0)" checked><label for="redRadio">Red</label>
+						<input type="radio" id="blueRadio" name="radioColor" value="rgb(0,255,0)"><label for="blueRadio">Blue</label><br>
+						<input type="radio" id="greenRadio" name="radioColor" value="rgb(0,0,255)"><label for="greenRadio">Green</label>
+						<input type="radio" id="greenRadio" name="radioColor" value="rgb(150,100,50)"><label for="gradientRadio">Gradient</label>
+					</span>
+					<hr>
 				</section>
 				<button id="fsButton">Full Screen</button>
 
@@ -75,7 +81,12 @@
 				<br>
 				<span id="trebleLabel">???</span>
 				<br>
-
+			</div>
+			<div>
+				<span id="radioVisSpan"><label for="radioVisSpan"><u>Audio Type for Visualization:</u></label><br><br>
+					<input type="radio" id="freqRadio" name="radioAudioType" value="frequency" checked><label for="freqRadio">Frequency</label>
+					<input type="radio" id="waveRadio" name="radioAudioType" value="waveform"><label for="waveRadio">Waveform</label><br>
+				</span>
 			</div>
 
 
@@ -92,10 +103,13 @@
 				<label for="trackSelect">Or choose one of the preloaded tracks:</label>
 				<br>
 					<select id="trackSelect">
-						<option value="./assets/audio/New Adventure Theme.mp3" selected>New Adventure Theme</option>
+						<option value="./assets/audio/KnightRider1982.mp3" selected>Knight Rider Theme</option>
+						<option value="./assets/audio/KnightRider2000.mp3">Knight Rider 2000 Theme</option>
+						<option value="./assets/audio/thx.mp3">THX Sound</option>
+						<option value="./assets/audio/TrailerParkBoys.mp3">Trailer Park Boys Theme</option>
+						<option value="./assets/audio/New Adventure Theme.mp3">New Adventure Theme</option>
 						<option value="./assets/audio/Peanuts Theme.mp3">Peanuts Theme</option>
 						<option value="./assets/audio/The Picard Song.mp3">The Picard Song</option>
-						<option value="./assets/audio/thx.mp3">THX Sound</option>
 
 					</select>
 

@@ -5,10 +5,7 @@ import * as utils from './utils.js';
 
 // Declare constants
 const DEFAULTS = Object.freeze({
-	sound1  :  "./assets/audio/New Adventure Theme.mp3",
-	sound2  :  "./assets/audio/Peanuts Theme.mp3",
-	sound3  :  "./assets/audio/The Picard Song.mp3"
-
+	sound1  :  "./assets/audio/KnightRider1982.mp3",
 });
 
 const windowParams = {
@@ -21,12 +18,14 @@ const windowParams = {
 
 const drawParams = {
 	waveform : true,
-	showGradient : true,
-	showBars     : true,
+	showBars     : false,
 	showCircles  : true,
-	showNoise    : false,
-	showInvert   : false,
-	playHeadPosition : 0
+	showCircularBars : true,
+	showKnightRider : false,
+	showKRScanner : false,
+	playHeadPosition : 0,
+	radioButtonColor : "red",
+	drawType : "frequency"
 }
 
 const uploadFiles = "";
@@ -81,12 +80,24 @@ const setupUI = (waveformCanvas) => {
 	let trackSelect = document.querySelector("#trackSelect");
 	let uploadElement = document.querySelector("#upload");
 
-	let gradientCheckbox = document.querySelector("#gradientCB");
 	let barsCheckbox = document.querySelector("#barsCB");
 	let circlesCheckbox = document.querySelector("#circlesCB");
+	let circularBarsCheckbox = document.querySelector("#circularBarsCB");
+	let kittCheckbox = document.querySelector("#kittCB");
+	let kittScannerCheckbox = document.querySelector("#kittScannerCB");
+
 	// let noiseCheckbox = document.querySelector("#noiseCB");
 	// let invertCheckbox = document.querySelector("#invertCB");
 	// let embossCheckbox = document.querySelector("#embossCB");
+
+	let colorRadioButtons = document.querySelectorAll('input[type=radio][name="radioColor"]');
+
+	colorRadioButtons.forEach(radio => radio.addEventListener('change', () => drawParams.radioButtonColor = radio.value));
+
+	let audioRadioButtons = document.querySelectorAll('input[type=radio][name="radioAudioType"]');
+
+	audioRadioButtons.forEach(radio => radio.addEventListener('change', () => drawParams.drawType = radio.value));
+
 
 	// Actions related to audio file events or the waveformCanvas
 	uploadElement.onchange = (e) => {
@@ -193,11 +204,6 @@ const setupUI = (waveformCanvas) => {
 		trebleLabel.innerHTML = `${Math.round((e.target.value / 2 * 10))} %`
 	};
 
-
-  gradientCheckbox.onchange = e => {
-	  drawParams.showGradient = !drawParams.showGradient;
-  };
-
   barsCheckbox.onchange = e => {
 	  drawParams.showBars = !drawParams.showBars;
   };
@@ -206,23 +212,26 @@ const setupUI = (waveformCanvas) => {
 	  drawParams.showCircles = !drawParams.showCircles;
   };
 
-  // noiseCheckbox.onchange = e => {
-	//   drawParams.showNoise = !drawParams.showNoise;
-  // };
-  //
-  // invertCheckbox.onchange = e => {
-	//   drawParams.showInvert = !drawParams.showInvert;
-  // }
-  //
-  // embossCheckbox.onchange = e => {
-	//   drawParams.showEmboss = !drawParams.showEmboss;
-  // }
+  circularBarsCheckbox.onchange = e => {
+	  drawParams.showCircularBars = !drawParams.showCircularBars;
+  }
+
+  kittCheckbox.onchange = e => {
+	drawParams.showKnightRider = !drawParams.showKnightRider;
+  };
+
+  kittScannerCheckbox.onchange = e => {
+	drawParams.showKRScanner = !drawParams.showKRScanner;
+  };
 
 
 	// Setup the view elements on load
-  gradientCheckbox.checked = true;
-  barsCheckbox.checked = true;
+  barsCheckbox.checked = false;
   circlesCheckbox.checked = true;
+  circularBarsCheckbox.checked = true;
+  kittCheckbox.checked = false;
+  kittScannerCheckbox.checked = false;
+
   volumeSlider.dispatchEvent(new Event('input'));
   panSlider.dispatchEvent(new Event('input'));
   trebleSlider.dispatchEvent(new Event('input'));
