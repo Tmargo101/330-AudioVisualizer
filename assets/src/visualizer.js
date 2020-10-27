@@ -169,12 +169,21 @@ const drawMain = (params = {}) => {
 			}
 
 			for (let y = 0; y < sideBars; y++) {
-				mainCtx.fillRect((-(barWidth / 2) + y / 2) + 50 , y * 8, barWidth - y , 4);
-				mainCtx.fillRect((-(barWidth / 2) + y / 2) + 50 , -(y * 8), barWidth - y , 4);
+				if (params.radioButtonColor == "rgb(0,255,0)") {
+					mainCtx.fillRect((-(barWidth / 2) + y / 2) + 50 , 75 - (y * 8), barWidth - y , 4);
+					mainCtx.fillRect((-(barWidth / 2) + y / 2) + 50 , -75 + (y * 8), barWidth - y , 4);
 
-				mainCtx.fillRect((-(barWidth / 2) + y / 2) - 50 , y * 8, barWidth - y , 4);
-				mainCtx.fillRect((-(barWidth / 2) + y / 2) - 50 , -(y * 8), barWidth - y, 4);
+					mainCtx.fillRect((-(barWidth / 2) + y / 2) - 50 , 75 - (y * 8), barWidth - y , 4);
+					mainCtx.fillRect((-(barWidth / 2) + y / 2) - 50 ,-75 + (y * 8), barWidth - y, 4);
 
+				} else {
+					mainCtx.fillRect((-(barWidth / 2) + y / 2) + 50 , y * 8, barWidth - y , 4);
+					mainCtx.fillRect((-(barWidth / 2) + y / 2) + 50 , -(y * 8), barWidth - y , 4);
+
+					mainCtx.fillRect((-(barWidth / 2) + y / 2) - 50 , y * 8, barWidth - y , 4);
+					mainCtx.fillRect((-(barWidth / 2) + y / 2) - 50 , -(y * 8), barWidth - y, 4);
+
+				}
 				// mainCtx.fillRect(-(barWidth / 2) + y) ,y * 8, barWidth - (y * 2) , 4);
 				// mainCtx.fillRect(-(barWidth / 2) + y) ,-(y * 8), barWidth - (y * 2), 4);
 			}
