@@ -139,12 +139,19 @@ const drawMain = (params = {}) => {
 
 	if (params.showKnightRider) {
 		let barSpacing = 1;
-		let barWidth = 65;
+		let barWidth = 40;
 
 		mainCtx.save();
-		mainCtx.translate(mainCanvasWidth / 2, mainCanvasHeight / 2.5);
-		mainCtx.strokeStyle = params.radioButtonColor;
-		mainCtx.fillStyle = params.radioButtonColor;
+		mainCtx.translate(mainCanvasWidth / 2, mainCanvasHeight / 3);
+		let gradient = mainCtx.createLinearGradient(0,-125,0,125);
+
+ 	  gradient.addColorStop(0,"black");
+ 	  gradient.addColorStop(0.5,params.radioButtonColor);
+
+ 	  gradient.addColorStop(1, "black");
+
+ 	  mainCtx.fillStyle = gradient;
+		// mainCtx.fillStyle = params.radioButtonColor;
 
 		// Average frequencies
 		let total = 0;
@@ -153,28 +160,37 @@ const drawMain = (params = {}) => {
 		}
 		let avg = total / rtAudioData.length ;
 
-
-		// for (let i = 0; i < rtAudioData.length; i++) {
-
 			let centerBars = avg / 8;
 			let sideBars = avg / 16;
 
 			for (let y = 0; y < centerBars; y++) {
-				mainCtx.fillRect(-(barWidth / 2) + y ,y * 8, barWidth - (y * 2) , 4);
-				mainCtx.fillRect(-(barWidth / 2) + y ,-(y * 8), barWidth - (y * 2), 4);
+				mainCtx.fillRect(-(barWidth / 2) + y / 2 ,y * 8, barWidth - (y * 1) , 4);
+				mainCtx.fillRect(-(barWidth / 2) + y / 2,-(y * 8), barWidth - (y * 1), 4);
 			}
 
 			for (let y = 0; y < sideBars; y++) {
-				mainCtx.fillRect((-(barWidth / 2) + y) + 75 , y * 8, barWidth - (y * 2) , 4);
-				mainCtx.fillRect((-(barWidth / 2) + y) + 75 , -(y * 8), barWidth - (y * 2), 4);
+				mainCtx.fillRect((-(barWidth / 2) + y / 2) + 50 , y * 8, barWidth - y , 4);
+				mainCtx.fillRect((-(barWidth / 2) + y / 2) + 50 , -(y * 8), barWidth - y , 4);
 
-				mainCtx.fillRect((-(barWidth / 2) + y) - 75 , y * 8, barWidth - (y * 2) , 4);
-				mainCtx.fillRect((-(barWidth / 2) + y) - 75 , -(y * 8), barWidth - (y * 2), 4);
+				mainCtx.fillRect((-(barWidth / 2) + y / 2) - 50 , y * 8, barWidth - y , 4);
+				mainCtx.fillRect((-(barWidth / 2) + y / 2) - 50 , -(y * 8), barWidth - y, 4);
 
 				// mainCtx.fillRect(-(barWidth / 2) + y) ,y * 8, barWidth - (y * 2) , 4);
 				// mainCtx.fillRect(-(barWidth / 2) + y) ,-(y * 8), barWidth - (y * 2), 4);
 			}
+		mainCtx.fillStyle = "yellow";
+		mainCtx.fillRect(-150,-100,50,25);
+		mainCtx.fillRect(-150,-50,50,25);
+		mainCtx.fillRect(100,-50,50,25);
+		mainCtx.fillRect(100,-100,50,25);
+		mainCtx.fillStyle = "red";
 
+		mainCtx.fillRect(100,100,50,25);
+		mainCtx.fillRect(100,50,50,25);
+		mainCtx.fillRect(100,0,50,25);
+		mainCtx.fillRect(-150,100,50,25);
+		mainCtx.fillRect(-150,50,50,25);
+		mainCtx.fillRect(-150,0,50,25);
 
 		mainCtx.restore();
 
