@@ -5,6 +5,15 @@
    /* font-weight: 400; */
 }
 
+* {
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+
+
 body {
    background: rgb(79,55,245);
    font-family: "San Fransisco";
