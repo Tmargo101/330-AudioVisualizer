@@ -10,8 +10,9 @@
 </head>
 <body>
 	<main>
-	<div class="useChromium">
-		<h1>This application requires a Chromium-based browser.</h1>
+	<div class="blockDiv">
+		<h1>Please Resize Screen</h1>
+		<h3>This application will only display properly on a larger screen.  Please resize your window, or decrease the scaling.</h3>
 	</div>
 	<div class="grid-container">
 		<div class="headerDiv">
@@ -43,6 +44,11 @@
 
 					<span><input type="checkbox" id="kittScannerCB"><label for="kittScannerCB">Show KITT Scanner</label></span>
 					<br>
+					<span><input type="checkbox" id="sepiaFilterCB"><label for="sepiaFilterCB">Dim Filter</label></span>
+					<br>
+					<span><input type="checkbox" id="brightFilterCB"><label for="brightFilterCB">Bright Mode</label></span>
+					<br>
+					<span><input type="checkbox" id="noiseFilterCB"><label for="noiseFilterCB">Noise Filter</label></span>
 					<hr>
 					<span id="radioSpan"><label for="radioSpan">Visualization Color:</label><br>
 						<input type="radio" id="redRadio" name="radioColor" value="rgb(255,0,0)" checked><label for="redRadio">Red</label>
@@ -56,6 +62,7 @@
 
 			</section>
 			<section class="mainVisualizerDiv">
+				<br>
 				<canvas id="mainCanvas"></canvas>
 			</section>
 

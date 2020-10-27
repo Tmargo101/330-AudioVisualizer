@@ -18,11 +18,14 @@ const windowParams = {
 
 const drawParams = {
 	waveform : true,
-	showBars     : false,
+	showBars     : true,
 	showCircles  : false,
 	showCircularBars : true,
 	showKnightRider : false,
 	showKRScanner : false,
+	showSepia : false,
+	showNoise : false,
+	showBright : false,
 	playHeadPosition : 0,
 	radioButtonColor : "red",
 	drawType : "frequency"
@@ -30,8 +33,11 @@ const drawParams = {
 
 const uploadFiles = "";
 
+let blockDiv, gridContainer;
 
 const init = () => {
+	blockDiv = document.querySelector(".blockDiv");
+	gridContainer = document.querySelector(".grid-container");
 
 	// Start processing the Default track
    audio.setupWebAudio(DEFAULTS.sound1);
@@ -54,6 +60,19 @@ const init = () => {
 
 const loop = () => {
 	requestAnimationFrame(loop);
+
+	if (window.innerWidth < 1300) {
+		blockDiv.style.display = "block";
+		gridContainer.style.display = "none";
+		audio.pauseCurrentSound();
+		windowParams.playing = "no";
+		e.target.dataset.playing = "no";
+
+	} else {
+		blockDiv.style.display = "none";
+		gridContainer.style.display = "grid";
+
+	}
 
 	if (windowParams.playing == "yes" && drawParams.playHeadPosition >= windowParams.waveformCanvasWidth) {
 
@@ -85,6 +104,10 @@ const setupUI = (waveformCanvas) => {
 	let circularBarsCheckbox = document.querySelector("#circularBarsCB");
 	let kittCheckbox = document.querySelector("#kittCB");
 	let kittScannerCheckbox = document.querySelector("#kittScannerCB");
+	let sepiaFilterCheckbox = document.querySelector("#sepiaFilterCB");
+	let noiseFilterCheckbox = document.querySelector("#noiseFilterCB");
+	let brightFilterCheckbox = document.querySelector("#brightFilterCB");
+
 
 	let colorRadioButtons = document.querySelectorAll('input[type=radio][name="radioColor"]');
 
@@ -205,6 +228,20 @@ const setupUI = (waveformCanvas) => {
 	  drawParams.showBars = !drawParams.showBars;
   };
 
+  sepiaFilterCheckbox.onchange = e => {
+	drawParams.showSepia = !drawParams.showSepia;
+  };
+
+  noiseFilterCheckbox.onchange = e => {
+	  drawParams.showNoise = !drawParams.showNoise;
+  };
+
+  brightFilterCheckbox.onchange = e => {
+	drawParams.showBright = !drawParams.showBright;
+  };
+
+
+
   circlesCheckbox.onchange = e => {
 	  drawParams.showCircles = !drawParams.showCircles;
 	  if (drawParams.showCircularBars || drawParams.showKnightRider) {
@@ -243,11 +280,14 @@ const setupUI = (waveformCanvas) => {
 
 
 	// Setup the view elements on load
-  barsCheckbox.checked = false;
+  barsCheckbox.checked = true;
   circlesCheckbox.checked = false;
   circularBarsCheckbox.checked = true;
   kittCheckbox.checked = false;
   kittScannerCheckbox.checked = false;
+  sepiaFilterCheckbox.checked = false;
+  brightFilterCheckbox.checked = false;
+  noiseFilterCheckbox.checked = false;
 
   volumeSlider.dispatchEvent(new Event('input'));
   panSlider.dispatchEvent(new Event('input'));

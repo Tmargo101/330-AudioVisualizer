@@ -281,16 +281,28 @@ const drawMain = (params = {}) => {
 	// A) grab all of the pixels on the canvas and put them in the `data` array
 	// `imageData.data` is a `Uint8ClampedArray()` typed array that has 1.28 million elements!
 	// the variable `data` below is a reference to that array
-	if (params.showNoise || params.showInvert || params.showEmboss) {
-		let imageData =mainCtx.getImageData(0, 0, mainCanvasWidth, mainCanvasHeight);
+	if (params.showSepia || params.showNoise || params.showBright) {
+		let imageData = mainCtx.getImageData(0, 0, mainCanvasWidth, mainCanvasHeight);
 		let data = imageData.data;
 		let length = data.length;
 		let width = data.width;
 
 		// B) Iterate through each pixel, stepping 4 elements at a time (which is the RGBA for 1 pixel)
 		for (let i = 0; i < length; i += 4) {
-			// C) randomly change every 20th pixel to red
-			if (params.showNoise && Math.random() < 0.05) {
+			if (params.showBright) {
+				data[i] = data[i] + 100;
+				data[i + 1] = data[i + 1] + 150;
+				data[i + 2] = data[i + 2] + 100;
+			}
+
+			if (params.showSepia) {
+				data[i] = data[i] - 100;
+				data[i + 1] = data[i + 1] - 150;
+				data[i + 2] = data[i + 2] - 100;
+	   	}
+
+
+			if (params.showNoise && Math.random() < 0.001) {
 
 				// data[i] is the red channel
 				// data[i+1] is the green channel
@@ -301,35 +313,16 @@ const drawMain = (params = {}) => {
 				data[i + 1] = 128; 	// Make the green channel 50%
 			} // end if
 
-			if (params.showInvert) {
-				let red = data[i], green = data[i+1], blue = data[i+2];
-				data[i] = 222 - red;
-				data[i+1] = 255 - green;
-				data[i+2] =255 - blue;
-				data[i+3]
-			}
-
-
-		} // end for
-
-		if (params.showEmboss) {
-			for (let i = 0; i < length; i++) {
-				if (i%4 == 3) {
-					continue;
-				}
-				// Something is really not working here.  Not sure what to do.
-				//data[i] = 127 + 2 * data[i] - data[i + 4] - data[i + width * 4];
-				//data[i] = 127 + 2*data[i] - data[i + 4] - data[i + width *4];
-			}
+			// data[i] = (data[i] / .393) + (data[i + 1] / .769) + (data[i + 2] / .189);
+			// data[i + 1] = (data[i] * .349) + (data[i + 1] *.686) + (data[i + 2] * .168);
+			// data[i + 2] = (data[i] * .272) + (data[i + 1] *.534) + (data[i + 2] * .131);
 		}
-		// D) copy image data back to canvas
-		ctx.putImageData(imageData, 0, 0);
-	}
+		mainCtx.putImageData(imageData, 0, 0);
+   }
 
 
-
-
-
+	// mainCtx.filter = "sepia(75%)";
+		 // end if
 };
 
 const drawFrequency = (data) => {
