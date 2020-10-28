@@ -29,7 +29,7 @@ body {
     ". . headerDiv . ."
     ". audioVisualizerDiv audioVisualizerDiv audioVisualizerDiv ."
     ". controlsDiv controlsDiv controlsDiv ."
-    ". . . . .";
+    "footerDiv footerDiv footerDiv footerDiv footerDiv";
 }
 
 section {
@@ -44,6 +44,10 @@ section {
    grid-template-rows: 1fr;
    grid-template-areas:
    "logoDiv titleDiv";
+}
+
+.footerDiv {
+   grid-area: footerDiv;
 }
 
 .audioVisualizerDiv {
@@ -182,13 +186,13 @@ input[type=file] {
 }
 
 .blockDiv {
-   padding-top: 40%;
+   padding-top: 30%;
    padding-bottom: 40%;
    line-height: 5vh;
    width: 100%;
-   height: 20%;
+   height: 30%;
    z-index: 100;
    text-align: center;
    background-color: rgba(25,25,25,0.5);
-   color: "white";
+   color: white;
 }

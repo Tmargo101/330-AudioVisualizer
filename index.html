@@ -12,17 +12,17 @@
 	<main>
 	<div class="blockDiv">
 		<h1>Please Resize Screen</h1>
-		<h3>This application will only display properly on a larger screen.  Please resize your window, or decrease the scaling.</h3>
+		<h3>This application will only display properly on a larger screen.  Please resize your window, or decrease the window scaling.</h3>
 	</div>
 	<div class="grid-container">
-		<div class="headerDiv">
+		<header class="headerDiv">
 			<div class="logoDiv">
-				<img id="iconImage" src="assets/img/icon.png"></img>
+				<img id="iconImage" alt="Icon" src="assets/img/icon.png">
 			</div>
 			<div class="titleDiv">
 				<h1>Audio Sandbox</h1>
 			</div>
-		</div>
+		</header>
 		<section class="audioVisualizerDiv">
 			<section class="waveformDiv">
 				<canvas id="waveformCanvas"></canvas>
@@ -50,7 +50,7 @@
 					<br>
 					<span><input type="checkbox" id="noiseFilterCB"><label for="noiseFilterCB">Noise Filter</label></span>
 					<hr>
-					<span id="radioSpan"><label for="radioSpan">Visualization Color:</label><br>
+					<span id="radioSpan">Visualization Color:<br>
 						<input type="radio" id="redRadio" name="radioColor" value="rgb(255,0,0)" checked><label for="redRadio">Red</label>
 						<input type="radio" id="greenRadio" name="radioColor" value="rgb(0,255,0)"><label for="greenRadio">Green</label><br>
 						<input type="radio" id="blueRadio" name="radioColor" value="rgb(0,0,255)"><label for="blueRadio">Blue</label>
@@ -96,7 +96,7 @@
 				<br>
 			</div>
 			<div class="radioVisualizationDiv">
-				<span id="radioVisSpan"><label for="radioVisSpan">Audio Type for Visualization:</label><br><br>
+				<span id="radioVisSpan">Audio Type for Visualization:<br><br>
 					<input type="radio" id="freqRadio" name="radioAudioType" value="frequency" checked><label for="freqRadio">Frequency</label>
 					<input type="radio" id="waveRadio" name="radioAudioType" value="waveform"><label for="waveRadio">Waveform</label><br>
 				</span>
@@ -137,6 +137,9 @@
 			</section>
 
 		</section>
+		<footer class="footerDiv">
+			<h5 style="text-align: center; color: white;">IGME-330 Project 2.  Created by Tom Margosian, Oct 2020.</h5>
+		</footer>
 	</div>
 
 

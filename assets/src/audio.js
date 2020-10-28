@@ -50,8 +50,6 @@ const setupWebAudio = (filePath) => {
 
    stereoPannerNode.connect(audioCtx.destination);
 
-   console.log("Frequnecy: " + trebleNode.frequency.value);
-   console.log("Gain: " + trebleNode.gain.value);
 };
 
 const loadSoundFile = (filePath) => {
@@ -68,7 +66,6 @@ const xhrLoadSoundFile = (filePath) => {
    xhr.responseType = 'arraybuffer';
 
    xhr.onload = function(event) {
-      console.log(typeof this.response);
 
       if (this.status == 200) {
          loadArrayBuffer(this.response);
@@ -118,7 +115,8 @@ const loadArrayBuffer = (testArrayBuffer) => {
    // Clear the frequencyData Array
    freqencyData = [];
 
-   // DOCUMENT WHERE THIS CODE CAME FROM
+   // This section of code taken from StackOverflow.
+   // Link: https://stackoverflow.com/a/46069463
    let audioBuffer = audioCtx.decodeAudioData(testArrayBuffer, function(e) {
 
       let offline = new OfflineAudioContext(2, e.length ,44100);
@@ -149,7 +147,7 @@ const loadArrayBuffer = (testArrayBuffer) => {
       };
       bufferSource.start(0);
       offline.oncomplete = function(e){
-        console.log('analysed');
+        console.log('Song Analysis Complete');
         visualizer.drawFrequency(freqencyData);
       };
 

@@ -136,13 +136,13 @@ const setupUI = (waveformCanvas) => {
 				fileReader.onload = function(){
 					audio.loadArrayBuffer(this.result);
 				}
-					fileReader.readAsArrayBuffer(event.target.files[0])
-				}
-
-				// load sound file into the audio element
-				let url = URL.createObjectURL(event.target.files[0]);
-				audio.loadSoundFile(url);
-				drawParams.playHeadPosition = 0;
+				fileReader.readAsArrayBuffer(event.target.files[0])
+			}
+			
+			// load sound file into the audio element
+			let url = URL.createObjectURL(event.target.files[0]);
+			audio.loadSoundFile(url);
+			drawParams.playHeadPosition = 0;
 	   }
 	};
 

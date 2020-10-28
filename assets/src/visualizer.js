@@ -27,7 +27,6 @@ const setupMainCanvas = (mainCanvasElement, analyserNodeRef) => {
 	mainCtx.fillRect(0,0,mainCanvasWidth, mainCanvasHeight);
 
 	analyserNode = analyserNodeRef;
-	console.log(analyserNode);
 	// this is the array where the analyser data will be stored
 	rtAudioFreqencyData = new Uint8Array(analyserNode.fftSize/2);
 	rtAudioWaveformData = new Uint8Array(analyserNode.fftSize/2);
@@ -127,8 +126,7 @@ const drawMain = (params = {}) => {
 
 		for (let i = 0; i < rtAudioData.length; i++) {
 			mainCtx.fillStyle = gradient;
-			// mainCtx.fillRect(10, 0, rtAudioData[i] / 2.25, barWidth);
-			// mainCtx.fillStyle = "green";
+
 			mainCtx.fillRect(125, 0, -(rtAudioData[i] / 3), barWidth);
 			mainCtx.fillRect(125, 0, (rtAudioData[i] / 4), barWidth);
 			mainCtx.rotate(circleRotation);
@@ -184,8 +182,6 @@ const drawMain = (params = {}) => {
 					mainCtx.fillRect((-(barWidth / 2) + y / 2) - 50 , -(y * 8), barWidth - y, 4);
 
 				}
-				// mainCtx.fillRect(-(barWidth / 2) + y) ,y * 8, barWidth - (y * 2) , 4);
-				// mainCtx.fillRect(-(barWidth / 2) + y) ,-(y * 8), barWidth - (y * 2), 4);
 			}
 		mainCtx.fillStyle = "yellow";
 		mainCtx.fillRect(-150,-100,50,25);
@@ -200,6 +196,7 @@ const drawMain = (params = {}) => {
 		mainCtx.fillRect(-150,100,50,25);
 		mainCtx.fillRect(-150,50,50,25);
 		mainCtx.fillRect(-150,0,50,25);
+
 
 		mainCtx.restore();
 
